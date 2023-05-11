@@ -7,6 +7,7 @@ Description: Game loop
 """
 
 class Game:
+    """The main game class."""
 
     def __init__(self):
         
