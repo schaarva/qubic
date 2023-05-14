@@ -2,7 +2,7 @@
 Qubic
 ~~~~~
 
-Autor: 
+Author: 
 Description: Status bar
 """
 

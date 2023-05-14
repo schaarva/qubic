@@ -2,7 +2,7 @@
 Qubic
 ~~~~~
 
-Autor: 
+Author: 
 Description: Game tree
 """
 
@@ -38,5 +38,15 @@ class Tree:
     
     def rate(self, node: Node):
         """Rate by custom rating."""
+
+        ...
+    
+    def checkWin(self):
+        """Check a pos for a win."""
+
+        ...
+    
+    def checkDraw(self):
+        """Check a pos for a draw."""
 
         ...
