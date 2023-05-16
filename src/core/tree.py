@@ -9,6 +9,11 @@ Description: Game tree
 class Node:
     """A node class for game tree."""
     
+    def __init__(self):
+
+        self.field = []
+        self.win = 0
+
     ...
 
 
@@ -31,22 +36,22 @@ class Tree:
 
         ...
     
-    def negamax(self, node: Node):
+    def rateNegamax(self, node: Node):
         """Rate by negamax."""
 
         ...
     
-    def rate(self, node: Node):
+    def rateCustom(self, node: Node):
         """Rate by custom rating."""
 
         ...
     
-    def checkWin(self):
+    def checkWin(self, node: Node):
         """Check a pos for a win."""
 
         ...
     
-    def checkDraw(self):
+    def checkDraw(self, node: Node):
         """Check a pos for a draw."""
 
         ...
