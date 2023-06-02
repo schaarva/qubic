@@ -6,6 +6,9 @@ Author:
 Description: Status bar
 """
 
+import pygame
+
+
 class Infos:
     """A class for a status bar."""
 
@@ -17,4 +20,4 @@ class Infos:
         self.player = True
     
     def render(self):
-        ...
+        return [pygame.surface.Surface((1280, 720))]

@@ -6,19 +6,30 @@ Author:
 Description: Game loop
 """
 import pygame
-import core 
 
-import pygame
+import core
+import gui.field
+import gui.infos
+
 
 class Game:
     """The main game class."""
 
     def __init__(self):
 
+        # Engine init
+
         self.screen = pygame.display.set_mode((1280, 720))
 
         self.maxfps = 100
         self.clock = pygame.time.Clock()
+
+        # GUI init
+
+        self.field = gui.field.Field()
+        self.infos = gui.infos.Infos()
+
+        # Loop init
 
         self.running = False
         self.eventqueue = []
@@ -50,6 +61,21 @@ class Game:
     
     def render(self):
         """Update GUI images."""
+
+        # Reset GUI
+
+        self.screen.fill((0, 0, 0))
+
+        # Render GUI
+
+        surfaces = []
+        
+        surfaces += self.field.render()
+        surfaces += self.infos.render()
+
+        # Show GUI
+
+        self.screen.blits(surfaces)
         pygame.display.flip()
 
     def wait(self):

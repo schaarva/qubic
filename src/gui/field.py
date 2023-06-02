@@ -6,15 +6,15 @@ Author:
 Description: Status bar
 """
 
-class Infos:
+import pygame
+
+
+class Field:
     """A class for a status bar."""
 
     def __init__(self):
         
-        self.fps = 0
-        self.turn = 0
-        self.time = (0, 0)
-        self.player = True
+        self.field = [[[None]*3]*3]
     
     def render(self):
-        ...
+        return [pygame.surface.Surface((1280, 720))]
