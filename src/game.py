@@ -16,7 +16,7 @@ class Game:
     """The main game class."""
 
     def __init__(self):
-
+        
         # Engine init
 
         self.screen = pygame.display.set_mode((1280, 720))
@@ -30,6 +30,8 @@ class Game:
         self.infos = gui.infos.Infos()
 
         # Loop init
+        
+        self.layer = 0
 
         self.running = False
         self.eventqueue = [] # --> besteht aus einem KEY (sagt welcher Bereich) und einer INFO (was soll in dem Bereich gemacht werden)
@@ -80,11 +82,17 @@ class Game:
             #Layer
             if key == core.LAYER: 
                 if info == core.INDEPTH:
-                    ...
+                    new = self.layer + 1 
+                    if new > 3: 
+                        new = 0
+                    self.layer = new
 
-            if key == core.LAYER: 
-                if info == core.OUT: 
-                    ...
+             
+                elif info == core.OUT: 
+                    n = self.layer - 1
+                    if n < 0: 
+                        n = 3
+                    self.layer = n
 
             #placement 
             if key == core.LAYER: 
