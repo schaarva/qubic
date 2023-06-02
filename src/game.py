@@ -113,8 +113,8 @@ class Game:
 
         surfaces = []
         
-        surfaces += self.field.render()
         surfaces += self.infos.render()
+        surfaces += self.field.render(self.layer)
 
         # Show GUI
 
