@@ -11,6 +11,7 @@ import const
 import gui.field
 import gui.infos
 import gui.view
+import gui.help
 
 
 class Game:
@@ -33,6 +34,7 @@ class Game:
         self.field = gui.field.Field()
         self.infos = gui.infos.Infos()
         self.view = gui.view.View()
+        self.help = gui.help.Help()
 
         # Loop init
         
@@ -155,6 +157,7 @@ class Game:
         # Render GUI
 
         surfaces += self.infos.render()
+        surfaces += self.help.render()
         surfaces += self.field.render(self.layer)
         surfaces += self.view.render(self.layer)
 

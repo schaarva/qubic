@@ -1,0 +1,28 @@
+"""
+Qubic
+~~~~~
+
+Author: Valentin
+Description: Help icon
+"""
+
+import pygame
+
+
+class Help:
+    """A class for a help icon."""
+
+    def __init__(self):
+        self.image = pygame.image.load("./assets/book.png").convert_alpha()
+    
+    def render(self):
+
+        help = pygame.surface.Surface((1280, 720)).convert_alpha()
+        help.fill((0, 0, 0, 0))
+
+        pygame.draw.rect(help, "black", pygame.Rect(90, 290, 140, 140), 4)
+
+        return [
+            (help, (0, 0)),
+            (self.image, (112, 312))
+        ]

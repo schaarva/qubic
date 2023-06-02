@@ -17,7 +17,7 @@ class Infos:
         self.fps = 0
         self.time = [0, 0]
 
-        self.font = pygame.font.SysFont("Arial", 50)
+        self.font = pygame.font.SysFont("Calibri", 50, True)
     
     def set_time(self, minutes: int, seconds: int):
 
@@ -38,9 +38,6 @@ class Infos:
     
     def render(self):
 
-        bar = pygame.surface.Surface((1280, 720)).convert_alpha()
-        bar.fill((0, 0, 0, 0))
-
         surface_time = self.font.render(
             f"{self.time[0]:02d}:{self.time[1]:02d}", False, (0, 0, 0))
         surface_time = surface_time.convert_alpha()
@@ -50,7 +47,6 @@ class Infos:
         surface_fps = surface_fps.convert_alpha()
 
         return [
-            (bar, (0, 0)),
             (surface_time, (105, 40)),
             (surface_fps, (1060, 40))
         ]
