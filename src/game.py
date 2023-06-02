@@ -2,12 +2,12 @@
 Qubic
 ~~~~~
 
-Author: 
+Author: Arne
 Description: Game loop
 """
 import pygame
 
-import core.core
+import const
 import gui.field
 import gui.infos
 
@@ -49,20 +49,20 @@ class Game:
             #quit
 
             if event.type == pygame.QUIT: 
-                self.eventqueue += [(core.SCREEN, core.QUIT)]
+                self.eventqueue += [(const.SCREEN, const.QUIT)]
 
 
 
             #Layers
             if keys[pygame.K_UP]:
-                self.eventqueue += [(core.LAYER, core.INDEPTH)]
+                self.eventqueue += [(const.LAYER, const.INDEPTH)]
         
             if keys[pygame.K_DOWN]: 
-                self.eventqueue += [(core.LAYER, core.OUT)]
+                self.eventqueue += [(const.LAYER, const.OUT)]
             
             #placement 
             if keys[pygame.MOUSEBUTTONDOWN]: 
-                self.eventqueue += [(core.LAYER, core.PLACE)]
+                self.eventqueue += [(const.LAYER, const.PLACE)]
         #print(self.eventqueue)
     
     def update(self):
@@ -74,29 +74,29 @@ class Game:
             key, info = event
 
             #window quit
-            if key == core.SCREEN: 
-                if info == core.QUIT: 
+            if key == const.SCREEN: 
+                if info == const.QUIT: 
                     self.running = False    
                     return 
 
             #Layer
-            if key == core.LAYER: 
-                if info == core.INDEPTH:
+            if key == const.LAYER: 
+                if info == const.INDEPTH:
                     new = self.layer + 1 
                     if new > 3: 
                         new = 0
                     self.layer = new
 
              
-                elif info == core.OUT: 
+                elif info == const.OUT: 
                     n = self.layer - 1
                     if n < 0: 
                         n = 3
                     self.layer = n
 
             #placement 
-            if key == core.LAYER: 
-                if info == core.PLACE: 
+            if key == const.LAYER: 
+                if info == const.PLACE: 
                     ...
             
 

@@ -2,7 +2,7 @@
 Qubic
 ~~~~~
 
-Author: 
+Author: Valentin
 Description: Status bar
 """
 

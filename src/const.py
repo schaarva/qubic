@@ -2,19 +2,24 @@
 Qubic
 ~~~~~
 
-Author: 
+Author: Arne
 Description: Constant definitions
 """
-"sectors"
 
+# Field
+EMPTY = 0
+CROSS = +1
+CIRCLE = -1
+
+# Sectors
 QUIT = "quit"
 LAYER = "layer"
 SCREEN = "screen"
 
-"placement"
+# Placement
 PLACE = "place"
 
-"map"
+# Map
 INDEPTH = "indepth"
 OUT = "out"
 

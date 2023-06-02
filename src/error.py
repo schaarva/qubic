@@ -2,7 +2,7 @@
 Qubic
 ~~~~~
 
-Author: 
+Author: Arne
 Description: Error message
 """
 import pygame 
