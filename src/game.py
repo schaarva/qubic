@@ -14,12 +14,11 @@ class Game:
     """The main game class."""
 
     def __init__(self):
-        width = 1280 
-        height = 720 
 
-        #window 
-        screen = pygame.display.set_mode((width, height))
-        
+        self.screen = pygame.display.set_mode((1280, 720))
+
+        self.maxfps = 100
+        self.clock = pygame.time.Clock()
 
         self.running = False
         self.eventqueue = []
@@ -55,7 +54,7 @@ class Game:
 
     def wait(self):
         """Wait for next frame."""
-        ...
+        self.clock.tick(self.maxfps)
     
     def run(self):
         """Run game loop."""
@@ -63,6 +62,7 @@ class Game:
         self.running = True
 
         pygame.init()
+        pygame.font.init()
 
         while self.running:
 
