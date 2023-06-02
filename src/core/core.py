@@ -5,9 +5,14 @@ Qubic
 Author: 
 Description: Constant definitions
 """
-"events"
-PLACE = "place"
+"sectors"
 
+QUIT = "quit"
+LAYER = "layer"
+SCREEN = "screen"
+
+"placement"
+PLACE = "place"
 
 "map"
 INDEPTH = "indepth"
