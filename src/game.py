@@ -107,13 +107,13 @@ class Game:
 
         # Reset GUI
 
-        self.screen.fill((0, 0, 0))
+        self.screen.fill((255, 255, 255))
 
         # Render GUI
 
         surfaces = []
         
-        surfaces += self.infos.render()
+        # surfaces += self.infos.render()
         surfaces += self.field.render(self.layer)
 
         # Show GUI

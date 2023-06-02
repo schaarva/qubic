@@ -21,8 +21,7 @@ class Infos:
     
     def render(self):
 
-        bar = pygame.surface.Surface((1280, 720))
-        bar.convert_alpha()
+        bar = pygame.surface.Surface((1280, 720)).convert_alpha()
         bar.fill((0, 0, 0, 0))
 
         return [(bar, (0, 0))]

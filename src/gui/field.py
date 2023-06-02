@@ -21,17 +21,12 @@ class Field:
 
         # Render grid
         
-        grid = pygame.surface.Surface((1280, 720))
-        grid.convert_alpha()
+        grid = pygame.surface.Surface((1280, 720)).convert_alpha()
         grid.fill((0, 0, 0, 0))
 
-        pygame.draw.line(grid, "orange", (320, 40), (960, 40), 10)
-            # Border top
-        pygame.draw.line(grid, "orange", (320, 680), (960, 680), 10)
-            # Border bot
-        pygame.draw.line(grid, "orange", (320, 40), (320, 680), 10)
-            # Border left
-        pygame.draw.line(grid, "orange", (960, 40), (960, 680), 10)
-            # Border right
+        pygame.draw.rect(grid, "orange", pygame.Rect(320, 40, 640, 640), 15)
+            # Border
+
+        # pygame.draw.line(grid, "green", (320, 40), (960, 40), 8)
 
         return [(grid, (0, 0))]
