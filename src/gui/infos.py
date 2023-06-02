@@ -47,6 +47,6 @@ class Infos:
         surface_fps = surface_fps.convert_alpha()
 
         return [
-            (surface_time, (105, 40)),
+            (surface_time, (100, 40)),
             (surface_fps, (1060, 40))
         ]

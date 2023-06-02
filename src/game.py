@@ -5,6 +5,7 @@ Qubic
 Author: Arne
 Description: Game loop
 """
+
 import pygame
 
 import const
@@ -40,18 +41,22 @@ class Game:
         
         self.layer = 0
         self.player = True
+        self.state = 1 # 1 - Ready, 0 - Play, -1 - End
 
         self.running = False
-        self.eventqueue = [] # --> besteht aus einem KEY (sagt welcher Bereich) und einer INFO (was soll in dem Bereich gemacht werden)
+        self.eventqueue = [] # Besteht aus einem KEY (sagt, welcher Bereich) 
+                             # und einer INFO (was soll in dem Bereich gemacht 
+                             # werden)
 
     def handle_inputs(self):
         """Collect events."""
-        """handle inputs from player"""
+        
+        # Handle inputs from player
         
         keys = pygame.key.get_pressed()
         events = pygame.event.get() 
 
-        """adding events to eventqueue"""
+        # Adding events to eventqueue
 
         for event in events: 
             
@@ -72,8 +77,6 @@ class Game:
             
             if keys[pygame.MOUSEBUTTONDOWN]: 
                 self.eventqueue += [(const.LAYER, const.PLACE)]
-        
-        # print(self.eventqueue)
     
     def update(self):
         """React to events."""
@@ -103,7 +106,6 @@ class Game:
                     if self.layer > 2: 
                         self.layer = 0
 
-             
                 elif info == const.OUT: 
                     
                     self.layer = self.layer - 1
@@ -119,6 +121,10 @@ class Game:
         # Update by time or state
         
         elapsed_time = self.clock.get_time() / 1_000
+
+        self.view.set_layer(self.layer)
+
+        self.field.set_layer(self.layer)
 
         curr_millis = pygame.time.get_ticks()
         curr_minutes, curr_millis = divmod(curr_millis, 60_000)
@@ -158,8 +164,8 @@ class Game:
 
         surfaces += self.infos.render()
         surfaces += self.help.render()
-        surfaces += self.field.render(self.layer)
-        surfaces += self.view.render(self.layer)
+        surfaces += self.field.render()
+        surfaces += self.view.render()
 
         # Show GUI
 

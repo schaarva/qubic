@@ -17,12 +17,12 @@ class Help:
     
     def render(self):
 
-        help = pygame.surface.Surface((1280, 720)).convert_alpha()
-        help.fill((0, 0, 0, 0))
+        surface_help = pygame.surface.Surface((1280, 720)).convert_alpha()
+        surface_help.fill((0, 0, 0, 0))
 
-        pygame.draw.rect(help, "black", pygame.Rect(90, 290, 140, 140), 4)
+        pygame.draw.rect(surface_help, "black", pygame.Rect(90, 290, 140, 140), 4)
 
         return [
-            (help, (0, 0)),
+            (surface_help, (0, 0)),
             (self.image, (112, 312))
         ]
