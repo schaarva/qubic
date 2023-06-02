@@ -31,7 +31,7 @@ class Game:
 
         # Loop init
         
-        self.layer = 0
+        self.layer = 1
 
         self.running = False
         self.eventqueue = [] # --> besteht aus einem KEY (sagt welcher Bereich) und einer INFO (was soll in dem Bereich gemacht werden)
@@ -46,24 +46,26 @@ class Game:
         """adding events to eventqueue"""
 
         for event in events: 
-            #quit
+            
+            # Quit
 
             if event.type == pygame.QUIT: 
                 self.eventqueue += [(const.SCREEN, const.QUIT)]
 
+            # Layers
 
-
-            #Layers
             if keys[pygame.K_UP]:
                 self.eventqueue += [(const.LAYER, const.INDEPTH)]
         
             if keys[pygame.K_DOWN]: 
                 self.eventqueue += [(const.LAYER, const.OUT)]
             
-            #placement 
+            # Placement
+            
             if keys[pygame.MOUSEBUTTONDOWN]: 
                 self.eventqueue += [(const.LAYER, const.PLACE)]
-        #print(self.eventqueue)
+        
+        # print(self.eventqueue)
     
     def update(self):
         """React to events."""
@@ -73,13 +75,13 @@ class Game:
             
             key, info = event
 
-            #window quit
+            # Window quit
             if key == const.SCREEN: 
                 if info == const.QUIT: 
                     self.running = False    
                     return 
 
-            #Layer
+            # Layer
             if key == const.LAYER: 
                 if info == const.INDEPTH:
                     new = self.layer + 1 
@@ -94,12 +96,30 @@ class Game:
                         n = 3
                     self.layer = n
 
-            #placement 
+            # Placement 
             if key == const.LAYER: 
                 if info == const.PLACE: 
                     ...
-            
+        
+        ### Test ###
 
+        self.field.setField([
+            [
+                [1, 0, -1],
+                [0, 0, 1],
+                [1, 0, 0]
+            ],
+            [
+                [1, -1, -1],
+                [1, -1, 1],
+                [1, -1, 0]
+            ],
+            [
+                [1, 0, 1],
+                [0, -1, 1],
+                [1, 0, -1]
+            ]
+        ])
             
     
     def render(self):
