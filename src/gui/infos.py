@@ -20,4 +20,4 @@ class Infos:
         self.player = True
     
     def render(self):
-        return [pygame.surface.Surface((1280, 720))]
+        return [(pygame.surface.Surface((1280, 720)), (0, 0))]

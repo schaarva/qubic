@@ -17,4 +17,4 @@ class Field:
         self.field = [[[None]*3]*3]
     
     def render(self):
-        return [pygame.surface.Surface((1280, 720))]
+        return [(pygame.surface.Surface((1280, 720)), (0, 0))]
