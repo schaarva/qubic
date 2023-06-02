@@ -7,7 +7,7 @@ Description: Error message
 """
 import pygame 
 
-class Error:
+class Error_:
     """A class for an error message window."""
 
     def show(self):
