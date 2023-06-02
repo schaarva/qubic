@@ -20,11 +20,14 @@ class Game:
         
         # Engine init
 
+        pygame.font.init()
+
         self.screen = pygame.display.set_mode((1280, 720))
+        pygame.display.set_caption("Qubic")
 
         self.maxfps = 100
         self.clock = pygame.time.Clock()
-
+        
         # GUI init
 
         self.field = gui.field.Field()
@@ -33,7 +36,8 @@ class Game:
 
         # Loop init
         
-        self.layer = 1
+        self.layer = 0
+        self.player = True
 
         self.running = False
         self.eventqueue = [] # --> besteht aus einem KEY (sagt welcher Bereich) und einer INFO (was soll in dem Bereich gemacht werden)
@@ -72,42 +76,59 @@ class Game:
     def update(self):
         """React to events."""
         
+        # Update by events
 
         for event in self.eventqueue: 
             
             key, info = event
 
             # Window quit
+
             if key == const.SCREEN: 
                 if info == const.QUIT: 
+                    
                     self.running = False    
                     return 
 
             # Layer
+
             if key == const.LAYER: 
+                
                 if info == const.INDEPTH:
-                    new = self.layer + 1 
-                    if new > 3: 
-                        new = 0
-                    self.layer = new
+                    
+                    self.layer = self.layer + 1 
+                    
+                    if self.layer > 2: 
+                        self.layer = 0
 
              
                 elif info == const.OUT: 
-                    n = self.layer - 1
-                    if n < 0: 
-                        n = 3
-                    self.layer = n
+                    
+                    self.layer = self.layer - 1
+                    
+                    if self.layer < 0: 
+                        self.layer = 2
 
             # Placement 
             if key == const.LAYER: 
                 if info == const.PLACE: 
                     ...
-        
-        ### Test ###
 
-        self.field.setField([
+        # Update by time or state
+        
+        elapsed_time = self.clock.get_time() / 1_000
+
+        curr_millis = pygame.time.get_ticks()
+        curr_minutes, curr_millis = divmod(curr_millis, 60_000)
+        curr_seconds, curr_millis = divmod(curr_millis, 1_000)
+        self.infos.set_time(curr_minutes, curr_seconds)
+
+        fps = self.clock.get_fps()
+        self.infos.set_fps(int(fps))
+
+        self.field.set_field([
             [
-                [1, 0, -1],
+                [-1, 0, -1],
                 [0, 0, 1],
                 [1, 0, 0]
             ],
@@ -121,8 +142,7 @@ class Game:
                 [0, -1, 1],
                 [1, 0, -1]
             ]
-        ])
-            
+        ]) # DEBUG
     
     def render(self):
         """Update GUI images."""
@@ -130,12 +150,11 @@ class Game:
         # Reset GUI
 
         self.screen.fill((255, 255, 255))
+        surfaces = []
 
         # Render GUI
 
-        surfaces = []
-        
-        # surfaces += self.infos.render()
+        surfaces += self.infos.render()
         surfaces += self.field.render(self.layer)
         surfaces += self.view.render(self.layer)
 
@@ -154,7 +173,6 @@ class Game:
         self.running = True
 
         pygame.init()
-        pygame.font.init()
 
         while self.running:
 

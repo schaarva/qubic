@@ -27,7 +27,7 @@ class Field:
     def __init__(self):
         self.field = [[[0, 0, 0]*3]*3]
     
-    def setField(self, field):
+    def set_field(self, field):
         self.field = field
     
     def render(self, layer: int):
@@ -37,13 +37,13 @@ class Field:
         grid = pygame.surface.Surface((1280, 720)).convert_alpha()
         grid.fill((0, 0, 0, 0))
 
-        pygame.draw.rect(grid, "orange", pygame.Rect(320, 40, 640, 640), 15)
+        pygame.draw.rect(grid, "black", pygame.Rect(320, 40, 640, 640), 15)
             # Border
         
-        pygame.draw.line(grid, "orange", (340, 260), (940, 260), 8) # Top
-        pygame.draw.line(grid, "orange", (340, 460), (940, 460), 8) # Bot
-        pygame.draw.line(grid, "orange", (540, 60), (540, 660), 8) # Left
-        pygame.draw.line(grid, "orange", (740, 60), (740, 660), 8) # Right
+        pygame.draw.line(grid, "black", (340, 260), (940, 260), 8) # Top
+        pygame.draw.line(grid, "black", (340, 460), (940, 460), 8) # Bot
+        pygame.draw.line(grid, "black", (540, 60), (540, 660), 8) # Left
+        pygame.draw.line(grid, "black", (740, 60), (740, 660), 8) # Right
 
         # Render crosses and circles
 
@@ -56,15 +56,15 @@ class Field:
                 if self.field[layer][y][x] == const.CROSS:
                     
                     pygame.draw.line(
-                        signs, "green", (340+x*200+20, 60+y*200+20),
+                        signs, "blue", (340+x*200+20, 60+y*200+20),
                         (340+x*200+180, 60+y*200+180), 8)
                     pygame.draw.line(
-                        signs, "green", (340+x*200+180, 60+y*200+20),
+                        signs, "blue", (340+x*200+180, 60+y*200+20),
                         (340+x*200+20, 60+y*200+180), 8)
                 
                 elif self.field[layer][y][x] == const.CIRCLE:
                     
                     pygame.draw.circle(
-                        signs, "blue", (340+x*200+100, 60+y*200+100), 80, 8)
+                        signs, "red", (340+x*200+100, 60+y*200+100), 80, 8)
 
         return [(grid, (0, 0)), (signs, (0, 0))]
