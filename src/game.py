@@ -10,6 +10,7 @@ import pygame
 import const
 import gui.field
 import gui.infos
+import gui.view
 
 
 class Game:
@@ -28,6 +29,7 @@ class Game:
 
         self.field = gui.field.Field()
         self.infos = gui.infos.Infos()
+        self.view = gui.view.View()
 
         # Loop init
         
@@ -135,6 +137,7 @@ class Game:
         
         # surfaces += self.infos.render()
         surfaces += self.field.render(self.layer)
+        surfaces += self.view.render(self.layer)
 
         # Show GUI
 
