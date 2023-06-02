@@ -6,6 +6,8 @@ Author:
 Description: Game loop
 """
 
+import pygame
+
 class Game:
     """The main game class."""
 
@@ -35,7 +37,7 @@ class Game:
 
         self.running = True
 
-        # pygame.init()
+        pygame.init()
 
         while self.running:
 
@@ -44,4 +46,4 @@ class Game:
             self.render()
             self.wait()
         
-        # pygame.quit()
+        pygame.quit()
