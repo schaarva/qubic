@@ -7,7 +7,7 @@ Description: Game loop
 """
 import pygame
 
-import core
+import core.core
 import gui.field
 import gui.infos
 
@@ -63,7 +63,7 @@ class Game:
             #placement 
             if keys[pygame.MOUSEBUTTONDOWN]: 
                 self.eventqueue += [(core.LAYER, core.PLACE)]
-        print(self.eventqueue)
+        #print(self.eventqueue)
     
     def update(self):
         """React to events."""

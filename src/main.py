@@ -8,6 +8,11 @@ Description: Entrypoint
 
 import game
 
+import error 
 
 if __name__ == "__main__":
-    game.Game().run()
+    try: 
+        game.Game().run()
+    
+    except Exception as err: 
+        error.Error.show(err)
