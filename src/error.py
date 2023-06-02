@@ -12,5 +12,6 @@ class Error:
 
     def show(self):
         """Show the message window."""
-        self.errorScreen = pygame.display.set_mode(500, 100)
+        self.errorScreen = pygame.display.set_mode((500, 100))
+        pygame.display.flip()
         
