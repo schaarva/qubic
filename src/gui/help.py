@@ -13,7 +13,7 @@ class Help:
     """A class for a help icon."""
 
     def __init__(self):
-        self.image = pygame.image.load("./assets/book.png").convert_alpha()
+        self.image = pygame.image.load("./assets/images/book.png").convert_alpha()
     
     def render(self):
 

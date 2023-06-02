@@ -13,6 +13,7 @@ import gui.field
 import gui.infos
 import gui.view
 import gui.help
+import gui.state
 
 
 class Game:
@@ -32,16 +33,17 @@ class Game:
         
         # GUI init
 
-        self.field = gui.field.Field()
-        self.infos = gui.infos.Infos()
-        self.view = gui.view.View()
-        self.help = gui.help.Help()
+        self.gui_field = gui.field.Field()
+        self.gui_infos = gui.infos.Infos()
+        self.gui_view = gui.view.View()
+        self.gui_help = gui.help.Help()
+        self.gui_state = gui.state.State()
 
         # Loop init
         
         self.layer = 0
         self.player = True
-        self.state = 1 # 1 - Ready, 0 - Play, -1 - End
+        self.state = 0 # 1 - Ready, 0 - Play, -1 - End
 
         self.running = False
         self.eventqueue = [] # Besteht aus einem KEY (sagt, welcher Bereich) 
@@ -119,22 +121,23 @@ class Game:
                     ...
 
         # Update by time or state
-        
-        elapsed_time = self.clock.get_time() / 1_000
 
-        self.view.set_layer(self.layer)
+        self.gui_view.set_layer(self.layer)
 
-        self.field.set_layer(self.layer)
+        self.gui_field.set_layer(self.layer)
+
+        self.gui_state.set_state(self.state)
+        self.gui_state.set_win(0) # DEBUG: .set_win(self.position.win)
 
         curr_millis = pygame.time.get_ticks()
         curr_minutes, curr_millis = divmod(curr_millis, 60_000)
         curr_seconds, curr_millis = divmod(curr_millis, 1_000)
-        self.infos.set_time(curr_minutes, curr_seconds)
+        self.gui_infos.set_time(curr_minutes, curr_seconds)
 
         fps = self.clock.get_fps()
-        self.infos.set_fps(int(fps))
+        self.gui_infos.set_fps(int(fps))
 
-        self.field.set_field([
+        self.gui_field.set_field([
             [
                 [-1, 0, -1],
                 [0, 0, 1],
@@ -150,7 +153,7 @@ class Game:
                 [0, -1, 1],
                 [1, 0, -1]
             ]
-        ]) # DEBUG
+        ]) # DEBUG: .set_field(self.position.field)
     
     def render(self):
         """Update GUI images."""
@@ -162,13 +165,13 @@ class Game:
 
         # Render GUI
 
-        surfaces += self.infos.render()
-        surfaces += self.help.render()
-        surfaces += self.field.render()
-        surfaces += self.view.render()
+        surfaces += self.gui_infos.render()
+        surfaces += self.gui_help.render()
+        surfaces += self.gui_field.render()
+        surfaces += self.gui_view.render()
+        surfaces += self.gui_state.render()
 
-        # Show GUI
-
+        # Show GUIdcxfsscv fnbbbbb bnvvvvvvvvvvvvvvvgbbbbbbbhgfvvvvvvvvvvvv
         self.screen.blits(surfaces)
         pygame.display.flip()
 
