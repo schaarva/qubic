@@ -60,7 +60,7 @@ class Game:
 
         # Adding events to eventqueue
 
-        for event in events: 
+        for event in events:
             
             # Quit
 
@@ -171,7 +171,7 @@ class Game:
         surfaces += self.gui_view.render()
         surfaces += self.gui_state.render()
 
-        # Show GUIdcxfsscv fnbbbbb bnvvvvvvvvvvvvvvvgbbbbbbbhgfvvvvvvvvvvvv
+        # Show GUI
         self.screen.blits(surfaces)
         pygame.display.flip()
 
