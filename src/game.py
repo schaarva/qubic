@@ -25,6 +25,7 @@ class Game:
 
         pygame.font.init()
 
+
         self.screen = pygame.display.set_mode((1280, 720))
         pygame.display.set_caption("Qubic")
 
@@ -39,11 +40,16 @@ class Game:
         self.gui_help = gui.help.Help()
         self.gui_state = gui.state.State()
 
+
+        self.mouse = pygame.mouse.get_pos()
+        #pygame.key.set_repeat(0, 1000)
+
         # Loop init
         
         self.layer = 0
         self.player = True
         self.state = 0 # 1 - Ready, 0 - Play, -1 - End
+        self.cor = None
 
         self.running = False
         self.eventqueue = [] # Besteht aus einem KEY (sagt, welcher Bereich) 
@@ -55,7 +61,7 @@ class Game:
         
         # Handle inputs from player
         
-        keys = pygame.key.get_pressed()
+        #keys = pygame.key.get_pressed()
         events = pygame.event.get() 
 
         # Adding events to eventqueue
@@ -68,17 +74,18 @@ class Game:
                 self.eventqueue += [(const.SCREEN, const.QUIT)]
 
             # Layers
+            elif event.type == pygame.KEYUP:
 
-            if keys[pygame.K_UP]:
-                self.eventqueue += [(const.LAYER, const.INDEPTH)]
+                if event.key  == pygame.K_UP:
+                    self.eventqueue += [(const.LAYER, const.INDEPTH)]
         
-            if keys[pygame.K_DOWN]: 
-                self.eventqueue += [(const.LAYER, const.OUT)]
+                elif event.key == pygame.K_DOWN:
+                    self.eventqueue += [(const.LAYER, const.OUT)]
             
             # Placement
             
-            if keys[pygame.MOUSEBUTTONDOWN]: 
-                self.eventqueue += [(const.LAYER, const.PLACE)]
+                elif event.key == pygame.MOUSEBUTTONDOWN: 
+                    self.eventqueue += [(const.LAYER, const.PLACE)]
     
     def update(self):
         """React to events."""
@@ -106,19 +113,57 @@ class Game:
                     self.layer = self.layer + 1 
                     
                     if self.layer > 2: 
-                        self.layer = 0
+                       self.layer = 2
 
                 elif info == const.OUT: 
                     
                     self.layer = self.layer - 1
                     
                     if self.layer < 0: 
-                        self.layer = 2
+                       self.layer = 0
 
-            # Placement 
+            # Placement --> verändert Field liste, sodass O/X da gerendert wird 
+        
             if key == const.LAYER: 
                 if info == const.PLACE: 
-                    ...
+                    if self.mouse[0] >= 340 and self.mouse[0] <= 540: 
+                        if self.mouse[1] >= 60 and self.mouse[1] <= 260: 
+                            self.cor = ([self.layer],[0],[0])
+                        elif self.mouse[1] >= 260 and self.mouse[1] <= 460: 
+                            #feld links mitte 
+                            #field[1][0]
+                            self.cor = ([self.layer],[1],[0])
+                        elif self.mouse[1] >= 460 and self.mouse[1] <= 660: 
+                            #feld links unten
+                            #field[2][0]
+                            self.cor = ([self.layer],[2],[0])
+                    elif self.mouse[0] >= 540 and self.mouse[0] <= 740: 
+                        if self.mouse[1] >= 60 and self.mouse[1] <= 260: 
+                            #mitte oben 
+                            #field[0][1]
+                            self.cor = ([self.layer],[0],[1])
+                        elif self.mouse[1] >= 260 and self.mouse[1] <= 460: 
+                            #mitte mitte 
+                            #field[1][1]
+                            self.cor = ([self.layer],[1],[1])
+                        elif self.mouse[1] >= 460 and self.mouse[1] <= 660: 
+                            #mitte unten 
+                            #field[2][1]
+                            self.cor = ([self.layer],[2],[1])
+                    elif self.mouse[0] >= 740 and self.mouse[0] <= 940: 
+                        if self.mouse[1] >= 60 and self.mouse[1] <= 260: 
+                            #rechts oben 
+                            #fiel[0][2]
+                            self.cor = ([self.layer],[0],[2])
+                        elif self.mouse[1] >= 260 and self.mouse[1] <= 460: 
+                            #rechts mitte 
+                            #field[1][2]
+                            self.cor = ([self.layer],[1],[2])
+                        elif self.mouse[1] >= 460 and self.mouse[1] <= 660: 
+                            #rechts unten 
+                            #field[2][2]
+                            self.cor = ([self.layer],[2],[2])
+
 
         # Update by time or state
 
