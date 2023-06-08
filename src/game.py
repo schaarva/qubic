@@ -7,7 +7,9 @@ Description: Game loop
 """
 
 import pygame
+import subprocess
 
+import core.player
 import const
 import gui.field
 import gui.infos
@@ -41,7 +43,7 @@ class Game:
         self.gui_state = gui.state.State()
 
 
-        self.mouse = pygame.mouse.get_pos()
+        
         #pygame.key.set_repeat(0, 1000)
 
         # Loop init
@@ -63,6 +65,7 @@ class Game:
         
         #keys = pygame.key.get_pressed()
         events = pygame.event.get() 
+        maus = pygame.mouse.get_pressed()
 
         # Adding events to eventqueue
 
@@ -83,15 +86,22 @@ class Game:
                     self.eventqueue += [(const.LAYER, const.OUT)]
             
             # Placement
-            
-                elif event.key == pygame.MOUSEBUTTONDOWN: 
-                    self.eventqueue += [(const.LAYER, const.PLACE)]
+            if event.type == pygame.MOUSEBUTTONDOWN:
+
+                    #help button 
+                    if self.mouse[0] >= 90 and self.mouse[0] <= 230:
+                        if self.mouse[1] >= 290 and self.mouse[1] <= 480:
+                            subprocess.Popen([r".\assets\help.pdf"],shell=True)
+
+                    else: 
+                        self.eventqueue += [(const.LAYER, const.PLACE)]
+                    
     
     def update(self):
         """React to events."""
         
         # Update by events
-
+        self.mouse = pygame.mouse.get_pos()
         for event in self.eventqueue: 
             
             key, info = event
@@ -128,42 +138,41 @@ class Game:
                 if info == const.PLACE: 
                     if self.mouse[0] >= 340 and self.mouse[0] <= 540: 
                         if self.mouse[1] >= 60 and self.mouse[1] <= 260: 
-                            self.cor = ([self.layer],[0],[0])
+                           core.player.player_input((self.layer,0,0))
                         elif self.mouse[1] >= 260 and self.mouse[1] <= 460: 
                             #feld links mitte 
                             #field[1][0]
-                            self.cor = ([self.layer],[1],[0])
+                            core.player.player_input((self.layer,1,0))
                         elif self.mouse[1] >= 460 and self.mouse[1] <= 660: 
                             #feld links unten
                             #field[2][0]
-                            self.cor = ([self.layer],[2],[0])
+                            core.player.player_input((self.layer,2,0))
                     elif self.mouse[0] >= 540 and self.mouse[0] <= 740: 
                         if self.mouse[1] >= 60 and self.mouse[1] <= 260: 
                             #mitte oben 
                             #field[0][1]
-                            self.cor = ([self.layer],[0],[1])
+                            core.player.player_input((self.layer,0,1))
                         elif self.mouse[1] >= 260 and self.mouse[1] <= 460: 
                             #mitte mitte 
                             #field[1][1]
-                            self.cor = ([self.layer],[1],[1])
+                            core.player.player_input((self.layer,1,1))
                         elif self.mouse[1] >= 460 and self.mouse[1] <= 660: 
                             #mitte unten 
                             #field[2][1]
-                            self.cor = ([self.layer],[2],[1])
+                            core.player.player_input((self.layer,2,1))
                     elif self.mouse[0] >= 740 and self.mouse[0] <= 940: 
                         if self.mouse[1] >= 60 and self.mouse[1] <= 260: 
                             #rechts oben 
                             #fiel[0][2]
-                            self.cor = ([self.layer],[0],[2])
+                            core.player.player_input((self.layer,0,2))
                         elif self.mouse[1] >= 260 and self.mouse[1] <= 460: 
                             #rechts mitte 
                             #field[1][2]
-                            self.cor = ([self.layer],[1],[2])
+                            core.player.player_input((self.layer,1,2))
                         elif self.mouse[1] >= 460 and self.mouse[1] <= 660: 
                             #rechts unten 
                             #field[2][2]
-                            self.cor = ([self.layer],[2],[2])
-
+                            core.player.player_input((self.layer,2,2))
 
         # Update by time or state
 
@@ -232,10 +241,11 @@ class Game:
         pygame.init()
 
         while self.running:
-
+            
             self.handle_inputs()
             self.update()
             self.render()
             self.wait()
+            print(self.mouse)
         
         pygame.quit()
