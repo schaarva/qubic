@@ -6,10 +6,10 @@ Autor:
 Description: AI input
 """
 
-import tree
+import core.tree
 
 
-def ai_input(self, pos: tree.Node) -> tree.Node:
+def ai_input(self, pos: core.tree.Node) -> core.tree.Node:
     """Get next AI pos."""
 
     ...
