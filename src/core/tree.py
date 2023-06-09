@@ -111,7 +111,44 @@ class Tree:
     def rateCustom(self, node: Node):
         """Rate by custom rating."""
 
+        sum_rate = 0
+
+        list_rate = [
+            ((2, 1, 2), (1, 3, 1), (2, 1, 2)),
+            ((2, 1, 2), (1, 4, 1), (2, 1, 2)),
+            ((2, 1, 2), (1, 3, 1), (2, 1, 2))       
+        ] # gesamtes Feld sind 46
+
+        for z in range(3):
+
+            for y in range(3):
+
+                for x in range(3):
+
+                    if node.field[z][y][x] == const.EMPTY:
+                        sum_rate += list_rate[z][y][x]
         
+        if self.countZero(node) == 0:
+            return
+        
+        if sum_rate / self.countZero(node) < 2:
+
+            if node.player == True:
+                node.win = +1
+            
+            else:
+                node.win = -1
+
+        elif 2 < sum_rate / self.countZero(node) < 1.5:
+            node.win = 0
+
+        elif sum_rate / self.countZero(node) < 1.5:
+
+            if node.player == True:
+                node.win = -1
+            
+            else:
+                node.win = +1
     
     def checkWin(self, node: Node):
         """Check a pos for a win."""
@@ -202,3 +239,21 @@ class Tree:
                         zero += 1
 
         return zero
+    
+
+
+nana = Node()
+# -1 x
+# +1 o
+nana.field = [[[0, 0, 0],
+               [-1, 0, 0],
+               [+1, +1, -1]],
+              [[-1, +1, 0],
+               [0, +1, -1],
+               [+1, -1, 0]],
+              [[0, 0, +1],
+               [0, +1 , 0],
+               [0, 0, 0]]
+              ]
+nana.player = False
+print(Tree().checkWin(nana))

@@ -249,3 +249,8 @@ class Game:
             print(self.mouse)
         
         pygame.quit()
+    
+    def quit(self):
+
+        self.running = False
+        pygame.quit()
