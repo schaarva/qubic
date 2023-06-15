@@ -83,12 +83,12 @@ class Game:
             # Layers
             if self.state == 0: 
 
-                if event.type == pygame.KEYDOWN:
+                if event.type == pygame.MOUSEWHEEL:
 
-                    if event.key  == pygame.K_UP:
+                    if event.y  == 1:
                         self.eventqueue += [(const.LAYER, const.INDEPTH)]
         
-                    if event.key == pygame.K_DOWN:
+                    if event.y == -1:
                         self.eventqueue += [(const.LAYER, const.OUT)]
             
                 # Placement
@@ -126,7 +126,7 @@ class Game:
             if key == const.LAYER: 
                 
                 if info == const.INDEPTH:
-                    print("--------------------------------------------------")
+                    
                     self.layer = self.layer + 1 
                     
                     if self.layer > 2: 
