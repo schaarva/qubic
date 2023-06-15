@@ -67,8 +67,9 @@ class Game:
         # Handle inputs from player
         
         keys = pygame.key.get_pressed()
-        events = pygame.event.get() 
-        
+        events = pygame.event.get()
+
+        self.eventqueue.clear()        
 
         # Adding events to eventqueue
 
