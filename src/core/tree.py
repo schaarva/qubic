@@ -282,10 +282,13 @@ nana.field = [[[0, 0, 0],
                [0, 0, 0]]
               ]
 
-tree.build(2, True)
-tree.rateNegamax()
-print(tree.tree.win)
-# tree.printNodes()
-# print(tree.countNodes())
+if __name__ == "__main__":
 
-# checkWin, checkDraw, countZero,   - funkt
+    ...
+    
+    # tree.build(2, True)
+    # tree.rateNegamax()
+    # tree.printNodes()
+    # print(tree.countNodes())
+
+    # checkWin, checkDraw, countZero,   - funkt

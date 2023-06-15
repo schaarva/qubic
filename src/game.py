@@ -10,6 +10,8 @@ import pygame
 import subprocess
 
 import core.player
+import core.tree
+import core.ai
 import const
 import gui.field
 import gui.infos
@@ -47,11 +49,12 @@ class Game:
         #pygame.key.set_repeat(0, 1000)
 
         # Loop init
+
+        self.tree = core.tree.Tree()
         
         self.layer = 0
         self.player = True
         self.state = 1 # 1 - Ready, 0 - Play, -1 - End
-        self.cor = None
 
         self.running = False
         self.eventqueue = [] # Besteht aus einem KEY (sagt, welcher Bereich) 
@@ -145,41 +148,41 @@ class Game:
                 if info == const.PLACE: 
                     if self.mouse[0] >= 340 and self.mouse[0] <= 540: 
                         if self.mouse[1] >= 60 and self.mouse[1] <= 260: 
-                           core.player.player_input((self.layer,0,0))
-                        elif self.mouse[1] >= 260 and self.mouse[1] <= 460: 
+                           core.player.player_input(self.tree.tree, [self.layer, 0, 0])
+                        elif self.mouse[1] >= 260 and self.mouse[1] <= 460:
                             #feld links mitte 
                             #field[1][0]
-                            core.player.player_input((self.layer,1,0))
+                            core.player.player_input(self.tree.tree, [self.layer, 1, 0])
                         elif self.mouse[1] >= 460 and self.mouse[1] <= 660: 
                             #feld links unten
                             #field[2][0]
-                            core.player.player_input((self.layer,2,0))
+                            core.player.player_input(self.tree.tree, [self.layer, 2, 0])
                     elif self.mouse[0] >= 540 and self.mouse[0] <= 740: 
                         if self.mouse[1] >= 60 and self.mouse[1] <= 260: 
                             #mitte oben 
                             #field[0][1]
-                            core.player.player_input((self.layer,0,1))
+                            core.player.player_input(self.tree.tree, [self.layer, 0, 1])
                         elif self.mouse[1] >= 260 and self.mouse[1] <= 460: 
                             #mitte mitte 
                             #field[1][1]
-                            core.player.player_input((self.layer,1,1))
+                            core.player.player_input(self.tree.tree, [self.layer, 1, 1])
                         elif self.mouse[1] >= 460 and self.mouse[1] <= 660: 
                             #mitte unten 
                             #field[2][1]
-                            core.player.player_input((self.layer,2,1))
+                            core.player.player_input(self.tree.tree, [self.layer, 2, 1])
                     elif self.mouse[0] >= 740 and self.mouse[0] <= 940: 
                         if self.mouse[1] >= 60 and self.mouse[1] <= 260: 
                             #rechts oben 
                             #fiel[0][2]
-                            core.player.player_input((self.layer,0,2))
+                            core.player.player_input(self.tree.tree, [self.layer, 0, 2])
                         elif self.mouse[1] >= 260 and self.mouse[1] <= 460: 
                             #rechts mitte 
                             #field[1][2]
-                            core.player.player_input((self.layer,1,2))
+                            core.player.player_input(self.tree.tree, [self.layer, 1, 2])
                         elif self.mouse[1] >= 460 and self.mouse[1] <= 660: 
                             #rechts unten 
                             #field[2][2]
-                            core.player.player_input((self.layer,2,2))
+                            core.player.player_input(self.tree.tree, [self.layer, 2, 2])
 
         # Update by time or state
 
@@ -188,7 +191,7 @@ class Game:
         self.gui_field.set_layer(self.layer)
 
         self.gui_state.set_state(self.state)
-        self.gui_state.set_win(0) # DEBUG: .set_win(self.position.win)
+        self.gui_state.set_win(0) # DEBUG: .set_win(self.tree.treeition.win)
 
         curr_millis = pygame.time.get_ticks()
         curr_minutes, curr_millis = divmod(curr_millis, 60_000)
@@ -214,7 +217,7 @@ class Game:
                 [0, -1, 1],
                 [1, 0, -1]
             ]
-        ]) # DEBUG: .set_field(self.position.field)
+        ]) # DEBUG: .set_field(self.tree.treeition.field)
     
     def render(self):
         """Update GUI images."""
@@ -253,7 +256,6 @@ class Game:
             self.update()
             self.render()
             self.wait()
-            print(self.mouse)
         
         pygame.quit()
     
