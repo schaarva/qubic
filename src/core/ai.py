@@ -12,7 +12,7 @@ import core.tree
 def ai_input(pos: core.tree.Node) -> core.tree.Node:
     """Get next AI pos."""
 
-    if not childs:
+    if not pos.childs:
         return None
     
     childs = pos.childs

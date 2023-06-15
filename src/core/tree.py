@@ -22,6 +22,7 @@ class Node:
         self.childs = []
         self.win = 0
         self.player = False
+        self.change = None
 
 
 class Tree:
@@ -53,6 +54,7 @@ class Tree:
                     if node.field[y][x][z] == const.EMPTY:
                         
                         child = Node()
+                        child.change = (y, x, z)
                         child.field = copy.deepcopy(node.field)
                         node.childs += [child]
                         
