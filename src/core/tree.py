@@ -5,6 +5,8 @@ Qubic
 Author: 
 Description: Game tree
 """
+import copy
+
 import const
 
 class Node:
@@ -31,14 +33,17 @@ class Tree:
 
     def build(self, max_height: int, player: bool):
         """Extetree structure."""
+
+        if not self.tree.childs:
+            raise ValueError("Need leaf node.")
         
         self._build(self.tree, max_height, player)
 
     def _build(self, node: Node, max_height: int, player: bool):
         
         if max_height == 0:
-            return 
-
+            return
+        
         for y in range(3):
 
             for x in range(3):
@@ -46,11 +51,12 @@ class Tree:
                 for z in range(3):
                     
                     if node.field[y][x][z] == const.EMPTY:
+                        
                         child = Node()
-                        child.field = node.field
+                        child.field = copy.deepcopy(node.field)
                         node.childs += [child]
                         
-                        if player == True:
+                        if player:
                             child.field[y][x][z] = const.CROSS 
 
                         else:
@@ -60,30 +66,33 @@ class Tree:
 
                         self._build(child, max_height-1, not player)
     
+    def printNodes(self):
+        self._printNodes(self.tree, 0)
+    
+    def _printNodes(self, node: Node, __height):
+
+        if not node:
+            return
+        
+        print(__height * "  ", "o")
+
+        for child in node.childs:
+            self._printNodes(child, __height + 1)
+
     def countNodes(self):
         return self._countNodes(self.tree)
     
     def _countNodes(self, node: Node):
 
-        count = 0
-
         if not node:
             return 0
-        
-        count += 1
+
+        count = 1
 
         for child in node.childs:
             count += self._countNodes(child)
-        
-        return count
-    
-    def evaluate(self):
-        """Rate the win pos."""
 
-        # self.negamax() -> end
-        # self.rate() -> open
-
-        
+        return count        
     
     def rateNegamax(self):
         """Rate by negamax."""
@@ -108,8 +117,9 @@ class Tree:
                     node.win = 0
             
             else:
-                self.rateCustom(node)
-
+                node.win = self.rateCustom(node)
+            
+            return node.win
 
         maxi = -1
         
@@ -145,28 +155,25 @@ class Tree:
                     if node.field[z][y][x] == const.EMPTY:
                         sum_rate += list_rate[z][y][x]
         
-        if self.countZero(node) == 0:
-            return
-        
-        if sum_rate / self.countZero(node) < 2:
+        if 4 > sum_rate / self.countZero(node) > 2:
 
             if node.player == True:
-                node.win = +1
+                return +1
             
             else:
-                node.win = -1
+                return -1
 
-        elif 2 < sum_rate / self.countZero(node) < 1.5:
-            node.win = 0
+        elif 2 > sum_rate / self.countZero(node) > 1.5:
+            return 0
 
-        elif sum_rate / self.countZero(node) < 1.5:
+        elif 1.5 > sum_rate / self.countZero(node):
 
             if node.player == True:
-                node.win = -1
+                return -1
             
             else:
-                node.win = +1
-    
+                return +1
+
     def checkWin(self, node: Node):
         """Check a pos for a win."""
             # z, y, x
@@ -243,7 +250,7 @@ class Tree:
         return False
     
 
-    def countZero(self, node):
+    def countZero(self, node: Node):
 
         zero = 0
 
@@ -259,9 +266,9 @@ class Tree:
         return zero
     
 
+nana = Node()
 tree = Tree()
 
-"""""""""
 # -1 x
 # +1 o
 nana.field = [[[0, 0, 0],
@@ -274,8 +281,11 @@ nana.field = [[[0, 0, 0],
                [0, +1 , 0],
                [0, 0, 0]]
               ]
-"""""""""
-tree.build(4, False)
-print(tree.countNodes())
+
+tree.build(2, True)
+tree.rateNegamax()
+print(tree.tree.win)
+# tree.printNodes()
+# print(tree.countNodes())
 
 # checkWin, checkDraw, countZero,   - funkt
