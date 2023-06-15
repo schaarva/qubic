@@ -50,7 +50,7 @@ class Game:
         
         self.layer = 0
         self.player = True
-        self.state = 0 # 1 - Ready, 0 - Play, -1 - End
+        self.state = 1 # 1 - Ready, 0 - Play, -1 - End
         self.cor = None
 
         self.running = False
@@ -63,9 +63,9 @@ class Game:
         
         # Handle inputs from player
         
-        #keys = pygame.key.get_pressed()
+        keys = pygame.key.get_pressed()
         events = pygame.event.get() 
-        maus = pygame.mouse.get_pressed()
+        
 
         # Adding events to eventqueue
 
@@ -76,17 +76,23 @@ class Game:
             if event.type == pygame.QUIT: 
                 self.eventqueue += [(const.SCREEN, const.QUIT)]
 
-            # Layers
-            elif event.type == pygame.KEYUP:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    self.state = 0
 
-                if event.key  == pygame.K_UP:
-                    self.eventqueue += [(const.LAYER, const.INDEPTH)]
+            # Layers
+            if self.state == 0: 
+
+                if event.type == pygame.KEYDOWN:
+
+                    if event.key  == pygame.K_UP:
+                        self.eventqueue += [(const.LAYER, const.INDEPTH)]
         
-                elif event.key == pygame.K_DOWN:
-                    self.eventqueue += [(const.LAYER, const.OUT)]
+                    if event.key == pygame.K_DOWN:
+                        self.eventqueue += [(const.LAYER, const.OUT)]
             
-            # Placement
-            if event.type == pygame.MOUSEBUTTONDOWN:
+                # Placement
+                if event.type == pygame.MOUSEBUTTONDOWN:
 
                     #help button 
                     if self.mouse[0] >= 90 and self.mouse[0] <= 230:
@@ -95,6 +101,7 @@ class Game:
 
                     else: 
                         self.eventqueue += [(const.LAYER, const.PLACE)]
+                        #print("--------------------------------------")
                     
     
     def update(self):
@@ -119,20 +126,20 @@ class Game:
             if key == const.LAYER: 
                 
                 if info == const.INDEPTH:
-                    
+                    print("--------------------------------------------------")
                     self.layer = self.layer + 1 
                     
                     if self.layer > 2: 
                        self.layer = 2
 
-                elif info == const.OUT: 
+                if info == const.OUT: 
                     
                     self.layer = self.layer - 1
                     
                     if self.layer < 0: 
                        self.layer = 0
 
-            # Placement --> verändert Field liste, sodass O/X da gerendert wird 
+            # Placement --> gibt Koordinaten weiter, sodass O/X da gerendert wird 
         
             if key == const.LAYER: 
                 if info == const.PLACE: 
