@@ -12,13 +12,14 @@ class Node:
     
     def __init__(self):
 
-        self.field = [[[0, 0, 0]*3]*3]
+        self.field = [
+            [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+        ] # BUG
         self.childs = []
         self.win = 0
         self.player = False
-        
-
-    ...
 
 
 class Tree:
@@ -31,9 +32,9 @@ class Tree:
     def build(self, max_height: int, player: bool):
         """Extetree structure."""
         
-        self.build(self, self.tree, max_height, player)
+        self._build(self.tree, max_height, player)
 
-    def build_(self, node, max_height, player):
+    def _build(self, node: Node, max_height: int, player: bool):
         
         if max_height == 0:
             return 
@@ -44,11 +45,11 @@ class Tree:
 
                 for z in range(3):
                     
-                    if node.field[y][x][z] == 0:
+                    if node.field[y][x][z] == const.EMPTY:
                         child = Node()
                         child.field = node.field
                         node.childs += [child]
-
+                        
                         if player == True:
                             child.field[y][x][z] = const.CROSS 
 
@@ -57,8 +58,24 @@ class Tree:
                         
                         child.player = player
 
-                        self.build_(child, max_height-1, not player)
+                        self._build(child, max_height-1, not player)
+    
+    def countNodes(self):
+        return self._countNodes(self.tree)
+    
+    def _countNodes(self, node: Node):
 
+        count = 0
+
+        if not node:
+            return 0
+        
+        count += 1
+
+        for child in node.childs:
+            count += self._countNodes(child)
+        
+        return count
     
     def evaluate(self):
         """Rate the win pos."""
@@ -242,8 +259,9 @@ class Tree:
         return zero
     
 
+tree = Tree()
 
-nana = Node()
+"""""""""
 # -1 x
 # +1 o
 nana.field = [[[0, 0, 0],
@@ -256,5 +274,8 @@ nana.field = [[[0, 0, 0],
                [0, +1 , 0],
                [0, 0, 0]]
               ]
-nana.player = False
-print(Tree().checkWin(nana))
+"""""""""
+tree.build(4, False)
+print(tree.countNodes())
+
+# checkWin, checkDraw, countZero,   - funkt

@@ -26,7 +26,7 @@ class Field:
 
     def __init__(self):
         
-        self.field = [[[0, 0, 0]*3]*3]
+        self.field = [[[0, 0, 0]]*3]*3
         self.layer = 0
     
     def set_field(self, field):
