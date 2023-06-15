@@ -34,7 +34,7 @@ class Tree:
     def build(self, max_height: int, player: bool):
         """Extetree structure."""
 
-        if not self.tree.childs:
+        if self.tree.childs:
             raise ValueError("Need leaf node.")
         
         self._build(self.tree, max_height, player)
