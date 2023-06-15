@@ -32,16 +32,18 @@ class Field:
     def set_field(self, field):
         self.field = field
     
+    
     def set_layer(self, layer: int):
         
         self.layer = layer
 
+        
         if layer > 2:
             self.layer = 2
         
         if layer < 0:
             self.layer = 0
-    
+        
     def render(self):
 
         # Render grid

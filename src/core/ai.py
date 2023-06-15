@@ -2,7 +2,7 @@
 Qubic
 ~~~~~
 
-Autor: Arne
+Autor: 
 Description: AI input
 """
 

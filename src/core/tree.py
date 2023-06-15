@@ -236,6 +236,7 @@ class Tree:
 
                 if node.field[win[0][0]][win[0][1]][win[0][2]] != const.EMPTY:
                     return True
+                    
         
         return False
 
