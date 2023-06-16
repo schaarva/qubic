@@ -29,18 +29,19 @@ class Tree:
     """A game tree class."""
     
     def __init__(self):
+
         self.tree = Node()
+        self.tree.player = True
+
+        self.build()
 
 
-    def build(self, max_height: int, player: bool):
+    def build(self):
         """Extetree structure."""
+      
+        self._build(self.tree, 1)
 
-        if self.tree.childs:
-            raise ValueError("Need leaf node.")
-        
-        self._build(self.tree, max_height, player)
-
-    def _build(self, node: Node, max_height: int, player: bool):
+    def _build(self, node: Node, max_height: int):
         
         if max_height == 0:
             return
@@ -56,17 +57,29 @@ class Tree:
                         child = Node()
                         child.change = (y, x, z)
                         child.field = copy.deepcopy(node.field)
+
+                        created = []
+
+                        for child in node.childs:
+                            created += [child.change]
+
+                        if (y, x, z) in created:
+                            continue
+
                         node.childs += [child]
                         
-                        if player:
+                        if child.player:
                             child.field[y][x][z] = const.CROSS 
 
                         else:
                             child.field[y][x][z] = const.CIRCLE
-                        
-                        child.player = player
 
-                        self._build(child, max_height-1, not player)
+                        self.printField(child)
+                        print()
+                        
+                        child.player = not node.player
+
+                        self._build(child, max_height-1)
     
     def printNodes(self):
         self._printNodes(self.tree, 0)
@@ -135,6 +148,21 @@ class Tree:
         node.win = maxi
 
         return maxi
+    
+    def printField(self, node: Node):
+
+        print(node.field[0][0], "\t", node.field[1][0], "\t", node.field[2][0])
+        print(node.field[0][1], "\t", node.field[1][1], "\t", node.field[2][1])
+        print(node.field[0][2], "\t", node.field[1][2], "\t", node.field[2][2])
+    
+    def printFields(self, node: Node):
+
+        for child in node.childs:
+
+            print(child.field[0][0], "\t", child.field[1][0], "\t", child.field[2][0])
+            print(child.field[0][1], "\t", child.field[1][1], "\t", child.field[2][1])
+            print(child.field[0][2], "\t", child.field[1][2], "\t", child.field[2][2])
+            print()
 
 
     def rateCustom(self, node: Node):
@@ -267,6 +295,31 @@ class Tree:
 
         return zero
     
+    def ai_input(self):
+        
+        if not self.tree.childs:
+            return
+        
+        childs = self.tree.childs
+        childs.sort(key = lambda node: node.win)
+        
+        self.tree = childs[0]
+
+        self.build()
+        self.rateNegamax()
+    
+    def player_input(self, cor: tuple):
+        
+        for child in self.tree.childs:
+
+            child: Node
+
+            if child.change == cor:
+                
+                self.tree = child
+
+                self.build()
+                self.rateNegamax()
 
 nana = Node()
 tree = Tree()

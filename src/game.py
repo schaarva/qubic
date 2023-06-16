@@ -9,9 +9,7 @@ Description: Game loop
 import pygame
 import subprocess
 
-import core.player
 import core.tree
-import core.ai
 import const
 import gui.field
 import gui.infos
@@ -51,7 +49,6 @@ class Game:
         # Loop init
 
         self.tree = core.tree.Tree()
-        self.tree.build(2, False) # DEBUG: in update()
         
         self.layer = 0
         self.state = 1 # 1 - Ready, 0 - Play, -1 - End
@@ -101,7 +98,7 @@ class Game:
                     #help button 
                     if self.mouse[0] >= 90 and self.mouse[0] <= 230:
                         if self.mouse[1] >= 290 and self.mouse[1] <= 480:
-                            subprocess.Popen([r".\assets\help.pdf"],shell=True)
+                            subprocess.Popen([r".\assets\help.pdf"], shell=True)
 
                     else: 
                         self.eventqueue += [(const.LAYER, const.PLACE)]
@@ -147,48 +144,60 @@ class Game:
         
             if key == const.LAYER: 
                 if info == const.PLACE: 
-                    if self.mouse[0] >= 340 and self.mouse[0] <= 540: 
-                        if self.mouse[1] >= 60 and self.mouse[1] <= 260: 
-                            self.tree.tree = core.player.player_input(self.tree.tree, (self.layer, 0, 0))
+                    
+                    if self.mouse[0] >= 340 and self.mouse[0] <= 540:
+                        
+                        if self.mouse[1] >= 60 and self.mouse[1] <= 260:
+                            self.tree.player_input((self.layer, 0, 0))
+                        
                         elif self.mouse[1] >= 260 and self.mouse[1] <= 460:
                             #feld links mitte 
                             #field[1][0]
-                            self.tree.tree = core.player.player_input(self.tree.tree, (self.layer, 1, 0))
-                        elif self.mouse[1] >= 460 and self.mouse[1] <= 660: 
+                            self.tree.player_input((self.layer, 1, 0))
+                        
+                        elif self.mouse[1] >= 460 and self.mouse[1] <= 660:
                             #feld links unten
                             #field[2][0]
-                            self.tree.tree = core.player.player_input(self.tree.tree, (self.layer, 2, 0))
-                    elif self.mouse[0] >= 540 and self.mouse[0] <= 740: 
-                        if self.mouse[1] >= 60 and self.mouse[1] <= 260: 
+                            self.tree.player_input((self.layer, 2, 0))
+                    
+                    elif self.mouse[0] >= 540 and self.mouse[0] <= 740:
+                        
+                        if self.mouse[1] >= 60 and self.mouse[1] <= 260:
                             #mitte oben 
                             #field[0][1]
-                            self.tree.tree = core.player.player_input(self.tree.tree, (self.layer, 0, 1))
-                        elif self.mouse[1] >= 260 and self.mouse[1] <= 460: 
+                            self.tree.player_input((self.layer, 0, 1))
+                        
+                        elif self.mouse[1] >= 260 and self.mouse[1] <= 460:
                             #mitte mitte 
                             #field[1][1]
-                            self.tree.tree = core.player.player_input(self.tree.tree, (self.layer, 1, 1))
-                        elif self.mouse[1] >= 460 and self.mouse[1] <= 660: 
+                            self.tree.player_input((self.layer, 1, 1))
+                        
+                        elif self.mouse[1] >= 460 and self.mouse[1] <= 660:
                             #mitte unten 
                             #field[2][1]
-                            self.tree.tree = core.player.player_input(self.tree.tree, (self.layer, 2, 1))
-                    elif self.mouse[0] >= 740 and self.mouse[0] <= 940: 
-                        if self.mouse[1] >= 60 and self.mouse[1] <= 260: 
+                            self.tree.player_input((self.layer, 2, 1))
+                    
+                    elif self.mouse[0] >= 740 and self.mouse[0] <= 940:
+                        
+                        if self.mouse[1] >= 60 and self.mouse[1] <= 260:
                             #rechts oben 
                             #fiel[0][2]
-                            self.tree.tree = core.player.player_input(self.tree.tree, (self.layer, 0, 2))
-                        elif self.mouse[1] >= 260 and self.mouse[1] <= 460: 
+                            self.tree.player_input((self.layer, 0, 2))
+                        
+                        elif self.mouse[1] >= 260 and self.mouse[1] <= 460:
                             #rechts mitte 
                             #field[1][2]
-                            self.tree.tree = core.player.player_input(self.tree.tree, (self.layer, 1, 2))
-                        elif self.mouse[1] >= 460 and self.mouse[1] <= 660: 
-                            #rechts unten 
+                            self.tree.player_input((self.layer, 1, 2))
+                        
+                        elif self.mouse[1] >= 460 and self.mouse[1] <= 660:
+                            #rechts unten
                             #field[2][2]
-                            self.tree.tree = core.player.player_input(self.tree.tree, (self.layer, 2, 2))
+                            self.tree.player_input((self.layer, 2, 2))
 
         # Update by time or state
 
         if not self.tree.tree.player:
-            self.tree.tree = core.ai.ai_input(self.tree.tree)
+            self.tree.ai_input()
 
         self.gui_view.set_layer(self.layer)
 
