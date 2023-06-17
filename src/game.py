@@ -61,10 +61,8 @@ class Game:
         # Handle inputs from player
         
         self.mouse = pygame.mouse.get_pos()
-        keys = pygame.key.get_pressed()
+        mousebuttons = pygame.mouse.get_pressed(3)
         events = pygame.event.get()
-
-        self.eventqueue.clear()        
 
         # Adding events to eventqueue
 
@@ -87,7 +85,7 @@ class Game:
                         self.state = const.STATE_READY
 
             # Layers
-            if self.state == 0: 
+            if self.state == const.STATE_PLAY:
 
                 if event.type == pygame.MOUSEWHEEL:
 
@@ -100,12 +98,15 @@ class Game:
                 # Placement
                 if event.type == pygame.MOUSEBUTTONDOWN:
 
+                    if event.dict["button"] in (4, 5):
+                        continue
+
                     # Help button 
                     if self.mouse[0] >= 90 and self.mouse[0] <= 230:
                         if self.mouse[1] >= 290 and self.mouse[1] <= 480:
                             subprocess.Popen([r".\assets\help.pdf"], shell=True)
 
-                    else: 
+                    else:
                         self.eventqueue += [(const.LAYER, const.PLACE)]
                     
     
@@ -190,6 +191,8 @@ class Game:
                         
                         elif self.mouse[1] >= 460 and self.mouse[1] <= 660: # Bottom
                             self.tree.player_input((self.layer, 2, 2))
+        
+        self.eventqueue = []
 
         # Update by time or state
 

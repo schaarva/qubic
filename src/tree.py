@@ -267,8 +267,6 @@ class Tree:
     # In-Game functions
     
     def ai_input(self):
-
-        print("AI!")
         
         if not self.tree.childs:
             return
@@ -282,8 +280,6 @@ class Tree:
         self.rateNegamax()
     
     def player_input(self, cor: tuple):
-
-        print("Player!")
         
         for child in self.tree.childs:
 
