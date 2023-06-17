@@ -5,8 +5,9 @@ Qubic
 Author: Valentin
 Description: Start and end screen
 """
-
 import pygame
+
+import const
 
 
 class State:
@@ -45,7 +46,7 @@ class State:
         surface_state = pygame.surface.Surface((1280, 720)).convert_alpha()
         surface_state.fill((0, 0, 0, 0))
 
-        if self.state == -1:
+        if self.state == const.STATE_OVER:
 
             if self.win == -1:
                 surface_state = self.image_loss
@@ -56,7 +57,7 @@ class State:
             elif self.win == 1:
                 surface_state = self.image_win
         
-        elif self.state == 1:
+        elif self.state == const.STATE_READY:
             surface_state = self.image_welcome
 
         return [(surface_state, (0, 0))]

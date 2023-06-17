@@ -6,11 +6,29 @@ Author:
 Description: Game tree
 """
 import copy
+import random
 
 import const
 
 class Node:
-    """A node class for game tree."""
+    """
+    A node class for game tree.
+    
+    Field:
+    ~~~~~
+                   z
+              _ 2
+         _ 1
+        0------1------2 x
+        |
+        |
+        1
+        |
+        |
+        2
+        y
+    
+    """
     
     def __init__(self):
 
@@ -31,14 +49,14 @@ class Tree:
     def __init__(self):
 
         self.tree = Node()
-        self.tree.player = True # Ist jetzt der Player dran?
+        self.tree.player = True # Ist jetzt (im nächsten Zug) der Player dran?
 
         self.build()
 
     def build(self):
         """Extend tree structure."""
       
-        self._build(self.tree, 2)
+        self._build(self.tree, 1)
             # 1 (akku save)
             # 2 (normal)
             # 3 (intelligent)
@@ -104,7 +122,7 @@ class Tree:
                     node.win = -1
                 
                 else:
-                    node.win = 1
+                    node.win = +1
                 
                 return node.win
             
@@ -263,7 +281,16 @@ class Tree:
             return
         
         childs = self.tree.childs
-        childs.sort(key = lambda node: node.win)
+        
+        win = [child for child in childs if child.win == -1]
+        loose = [child for child in childs if child.win == 1]
+        draft = [child for child in childs if child.win == 0]
+
+        random.shuffle(win)
+        random.shuffle(loose)
+        random.shuffle(draft)
+
+        childs = win + draft + loose
         
         self.tree = childs[0]
 
@@ -341,10 +368,14 @@ class Tree:
 if __name__ == "__main__":
 
     tree = Tree()
+    node = Node()
+    node.field = [
+        [[-1, -1, 1], [-1, 1, 0], [1, 0, 0]],
+        [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+        [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    ]
     
-    tree.build()
-    tree.rateNegamax()
-    tree.printNodes()
+    print(tree.checkWin(node))
     # tree.printChanges(tree.tree)
     # print(len([child.change for child in tree.tree.childs]))
     # tree.printFields(tree.tree)

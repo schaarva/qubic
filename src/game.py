@@ -197,7 +197,7 @@ class Game:
         # Update by time or state
 
         if ((self.state == const.STATE_PLAY)
-            and not self.tree.tree.player):
+            and (not self.tree.tree.player)):
 
             self.tree.ai_input()
         
