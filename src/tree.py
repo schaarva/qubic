@@ -36,8 +36,16 @@ class Tree:
 
     def build(self):
         """Extend tree structure."""
+
+        # self.printFields(self.tree)
+        # print("-------------------------------------------------------")
       
-        self._build(self.tree, 1)
+        self._build(self.tree, 2)
+            # 1 (akku save)
+            # 2 (normal)
+            # 3 (intelligent)
+            # 4 (wait a few sec)
+            # 5 (data center)
 
     def _build(self, node: Node, max_height: int):
         
@@ -57,14 +65,13 @@ class Tree:
                         new_child = Node()
                         new_child.change = (y, x, z)
                         new_child.field = copy.deepcopy(node.field)
+                        new_child.player = not node.player
 
                         if new_child.player:
                             new_child.field[y][x][z] = const.CROSS 
 
                         else:
                             new_child.field[y][x][z] = const.CIRCLE
-                        
-                        new_child.player = not node.player
 
                         # Check for duplicates
 
