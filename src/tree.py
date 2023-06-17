@@ -21,7 +21,7 @@ class Node:
         ] # BUG
         self.childs = []
         self.win = 0
-        self.player = True # Ist als nächstes der Player dran?
+        self.player = True
         self.change = None
         self.over = False
 
@@ -31,7 +31,7 @@ class Tree:
     def __init__(self):
 
         self.tree = Node()
-        self.tree.player = True
+        self.tree.player = True # Ist jetzt der Player dran?
 
         self.build()
 
@@ -66,10 +66,10 @@ class Tree:
                         new_child.player = not node.player
 
                         if new_child.player:
-                            new_child.field[y][x][z] = const.CROSS 
+                            new_child.field[y][x][z] = const.CIRCLE 
 
                         else:
-                            new_child.field[y][x][z] = const.CIRCLE
+                            new_child.field[y][x][z] = const.CROSS
 
                         # Check for duplicates
 
@@ -97,9 +97,6 @@ class Tree:
             # Someone won
 
             if self.checkWin(node):
-
-                # self.printField(node)
-                # print()
                 
                 node.over = True
                 
@@ -242,14 +239,6 @@ class Tree:
                     return True
                     
         return False
-   
-    def checkDraw(self, node: Node):
-        """Check a pos for a draw."""
-
-        if self.checkWin(node) == False:
-            return True
-        
-        return False
 
     def countZero(self, node: Node):
 
@@ -304,7 +293,7 @@ class Tree:
         if not node:
             return
         
-        print(__height * "  ", node.win)
+        print(__height * "  ", node.player)
 
         for child in node.childs:
             self._printNodes(child, __height + 1)

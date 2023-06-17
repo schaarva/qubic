@@ -112,17 +112,6 @@ class Game:
     
     def update(self):
         """React to events."""
-
-        # Check game state
-
-        if self.tree.tree.over:
-
-            print("##############################")
-            print(self.tree.tree.player)
-            print(self.tree.tree.win)
-            self.tree.printField(self.tree.tree)
-            print("##############################")
-            self.state = const.STATE_OVER
         
         # Update by events
         
@@ -161,6 +150,9 @@ class Game:
 
                     if self.state == const.STATE_OVER:
                         continue
+
+                    if not self.tree.tree.player:
+                        continue
                     
                     if self.mouse[0] >= 340 and self.mouse[0] <= 540: # Left
                         
@@ -197,12 +189,22 @@ class Game:
         
         self.eventqueue = []
 
+        # Check game state
+
+        if self.tree.tree.over:
+            self.state = const.STATE_OVER
+
         # Update by time or state
 
-        if ((not self.state == const.STATE_OVER)
-            and (not self.tree.tree.player)):
+        if ((self.state == const.STATE_PLAY)
+            and not self.tree.tree.player):
 
             self.tree.ai_input()
+        
+        # Check game state
+
+        if self.tree.tree.over:
+            self.state = const.STATE_OVER
         
         curr_millis = pygame.time.get_ticks()
         curr_minutes, curr_millis = divmod(curr_millis, 60_000)
