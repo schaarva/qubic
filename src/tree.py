@@ -91,17 +91,14 @@ class Tree:
 
                         # Check for duplicates
 
-                        created = []
-
                         for child in node.childs:
-                            created += [child.change]
-
-                        if (y, x, z) in created:
-                            continue
-
-                        node.childs += [new_child]
-
-                        self._build(new_child, max_height-1)
+                            if child.change == new_child.change: # Do with old one
+                                self._build(child, max_height-1)
+                        
+                        else: # Do with new one
+                            
+                            node.childs += [new_child]
+                            self._build(new_child, max_height-1)
     
     def rateNegamax(self):
         """Rate by negamax."""
@@ -109,7 +106,7 @@ class Tree:
         self.rateNegamax_(self.tree)
 
     def rateNegamax_(self, node: Node):
-        
+       
         # Someone won
 
         if self.checkWin(node):
@@ -124,7 +121,7 @@ class Tree:
             
             return node.win
         
-        # No one won, field full
+        # Field full
         
         if self.countZero(node) == 0:
 
@@ -132,11 +129,11 @@ class Tree:
             
             node.win = 0
             return node.win
-        
-        # No one won, field not full
-
-        else:
             
+        # End of tree
+
+        if not node.childs:
+                
             node.win = self.rateCustom(node)
             return node.win
 
