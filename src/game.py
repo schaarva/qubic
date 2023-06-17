@@ -9,7 +9,7 @@ Description: Game loop
 import pygame
 import subprocess
 
-import core.tree
+import tree
 import const
 import gui.field
 import gui.infos
@@ -46,7 +46,7 @@ class Game:
 
         # Loop init
 
-        self.tree = core.tree.Tree()
+        self.tree = tree.Tree()
         
         self.layer = 0
         self.state = 1 # 1 - Ready, 0 - Play, -1 - End

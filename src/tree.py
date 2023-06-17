@@ -24,20 +24,18 @@ class Node:
         self.player = False
         self.change = None
 
-
 class Tree:
     """A game tree class."""
     
     def __init__(self):
 
         self.tree = Node()
-        self.tree.player = True
+        self.tree.player = False
 
         self.build()
 
-
     def build(self):
-        """Extetree structure."""
+        """Extend tree structure."""
       
         self._build(self.tree, 1)
 
@@ -334,8 +332,9 @@ if __name__ == "__main__":
     
     tree.build()
     tree.rateNegamax()
-    tree.printChanges(tree.tree)
-    print(len([child.change for child in tree.tree.childs]))
+    tree.printNodes()
+    # tree.printChanges(tree.tree)
+    # print(len([child.change for child in tree.tree.childs]))
     # tree.printFields(tree.tree)
 
     # checkWin, checkDraw, countZero,   - funkt
