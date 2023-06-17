@@ -6,6 +6,11 @@ Author: Arne
 Description: Constant definitions
 """
 
+# State
+STATE_READY = 1
+STATE_PLAY = 0
+STATE_OVER = -1
+
 # Field
 EMPTY = 0
 CROSS = +1

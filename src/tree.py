@@ -23,6 +23,7 @@ class Node:
         self.win = 0
         self.player = False
         self.change = None
+        self.over = False
 
 class Tree:
     """A game tree class."""
@@ -30,15 +31,12 @@ class Tree:
     def __init__(self):
 
         self.tree = Node()
-        self.tree.player = False
+        self.tree.player = True
 
         self.build()
 
     def build(self):
         """Extend tree structure."""
-
-        # self.printFields(self.tree)
-        # print("-------------------------------------------------------")
       
         self._build(self.tree, 2)
             # 1 (akku save)
@@ -87,34 +85,6 @@ class Tree:
 
                         self._build(new_child, max_height-1)
     
-    def printNodes(self):
-        self._printNodes(self.tree, 0)
-    
-    def _printNodes(self, node: Node, __height):
-
-        if not node:
-            return
-        
-        print(__height * "  ", "o")
-
-        for child in node.childs:
-            self._printNodes(child, __height + 1)
-
-    def countNodes(self):
-        return self._countNodes(self.tree)
-    
-    def _countNodes(self, node: Node):
-
-        if not node:
-            return 0
-
-        count = 1
-
-        for child in node.childs:
-            count += self._countNodes(child)
-
-        return count        
-    
     def rateNegamax(self):
         """Rate by negamax."""
 
@@ -124,27 +94,35 @@ class Tree:
         
         if not node.childs:
 
-            # Field full
-            
-            if self.countZero(node) == 0:
-                
-                if node.player == True:
+            # Someone won
 
-                    if self.checkWin(node) == True:
-                        node.win = +1
-                    
-                    else:
-                        node.win = -1
+            if self.checkWin(node):
+                
+                node.over = True
+                
+                if node.player:
+                    node.win = 1
                 
                 else:
-                    node.win = 0
+                    node.win = -1
+                
+                return node.win
             
-            # Field not full
+            # No one won, field full
+            
+            if self.countZero(node) == 0:
+
+                node.over = True
+                
+                node.win = 0
+                return node.win
+            
+            # No one won, field not full
 
             else:
+                
                 node.win = self.rateCustom(node)
-            
-            return node.win
+                return node.win
 
         maxi = -1
         
@@ -158,31 +136,6 @@ class Tree:
         node.win = maxi
 
         return maxi
-    
-    def printField(self, node: Node):
-
-        print(node.field[0][0], "\t", node.field[1][0], "\t", node.field[2][0])
-        print(node.field[0][1], "\t", node.field[1][1], "\t", node.field[2][1])
-        print(node.field[0][2], "\t", node.field[1][2], "\t", node.field[2][2])
-    
-    def printChanges(self, node: Node):
-
-        for child in node.childs:
-
-            child: Node
-
-            print(child.change)
-    
-    def printFields(self, node: Node):
-
-        for child in node.childs:
-
-            child: Node
-
-            print(child.field[0][0], "\t", child.field[1][0], "\t", child.field[2][0])
-            print(child.field[0][1], "\t", child.field[1][1], "\t", child.field[2][1])
-            print(child.field[0][2], "\t", child.field[1][2], "\t", child.field[2][2])
-            print()
 
     def rateCustom(self, node: Node):
         """Rate by custom rating."""
@@ -310,8 +263,12 @@ class Tree:
                         zero += 1
 
         return zero
+
+    # In-Game functions
     
     def ai_input(self):
+
+        print("AI!")
         
         if not self.tree.childs:
             return
@@ -325,6 +282,8 @@ class Tree:
         self.rateNegamax()
     
     def player_input(self, cor: tuple):
+
+        print("Player!")
         
         for child in self.tree.childs:
 
@@ -336,6 +295,61 @@ class Tree:
 
                 self.build()
                 self.rateNegamax()
+    
+    # Debug functions
+
+    def printNodes(self):
+        self._printNodes(self.tree, 0)
+    
+    def _printNodes(self, node: Node, __height):
+
+        if not node:
+            return
+        
+        print(__height * "  ", node.win)
+
+        for child in node.childs:
+            self._printNodes(child, __height + 1)
+
+    def countNodes(self):
+        return self._countNodes(self.tree)
+    
+    def _countNodes(self, node: Node):
+
+        if not node:
+            return 0
+
+        count = 1
+
+        for child in node.childs:
+            count += self._countNodes(child)
+
+        return count
+    
+    def printField(self, node: Node):
+
+        print(node.field[0][0], "\t", node.field[1][0], "\t", node.field[2][0])
+        print(node.field[0][1], "\t", node.field[1][1], "\t", node.field[2][1])
+        print(node.field[0][2], "\t", node.field[1][2], "\t", node.field[2][2])
+    
+    def printChanges(self, node: Node):
+
+        for child in node.childs:
+
+            child: Node
+
+            print(child.change)
+    
+    def printFields(self, node: Node):
+
+        for child in node.childs:
+
+            child: Node
+
+            print(child.field[0][0], "\t", child.field[1][0], "\t", child.field[2][0])
+            print(child.field[0][1], "\t", child.field[1][1], "\t", child.field[2][1])
+            print(child.field[0][2], "\t", child.field[1][2], "\t", child.field[2][2])
+            print()
 
 if __name__ == "__main__":
 

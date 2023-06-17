@@ -27,7 +27,6 @@ class Game:
 
         pygame.font.init()
 
-
         self.screen = pygame.display.set_mode((1280, 720))
         pygame.display.set_caption("Qubic")
 
@@ -49,7 +48,7 @@ class Game:
         self.tree = tree.Tree()
         
         self.layer = 0
-        self.state = 1 # 1 - Ready, 0 - Play, -1 - End
+        self.state = const.STATE_READY
 
         self.running = False
         self.eventqueue = [] # Besteht aus einem KEY (sagt, welcher Bereich) 
@@ -78,7 +77,14 @@ class Game:
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    self.state = 0
+
+                    if self.state == const.STATE_READY:
+                        self.state = const.STATE_PLAY
+                    
+                    elif self.state == const.STATE_OVER:
+
+                        self.tree = tree.Tree()
+                        self.state = const.STATE_READY
 
             # Layers
             if self.state == 0: 
@@ -94,18 +100,25 @@ class Game:
                 # Placement
                 if event.type == pygame.MOUSEBUTTONDOWN:
 
-                    #help button 
+                    # Help button 
                     if self.mouse[0] >= 90 and self.mouse[0] <= 230:
                         if self.mouse[1] >= 290 and self.mouse[1] <= 480:
                             subprocess.Popen([r".\assets\help.pdf"], shell=True)
 
                     else: 
                         self.eventqueue += [(const.LAYER, const.PLACE)]
-                        #print("--------------------------------------")
                     
     
     def update(self):
         """React to events."""
+
+        # Check game state
+
+        if self.tree.tree.over:
+
+            # self.tree.printField(self.tree.tree)
+            # print("--------------------------------------------")
+            self.state = const.STATE_OVER
         
         # Update by events
         
@@ -138,64 +151,51 @@ class Game:
                     
                     if self.layer < 0: 
                        self.layer = 0
-
-            # Placement --> gibt Koordinaten weiter, sodass O/X da gerendert wird
         
             if key == const.LAYER: 
-                if info == const.PLACE: 
+                if info == const.PLACE:
+
+                    if self.state == const.STATE_OVER:
+                        continue
                     
-                    if self.mouse[0] >= 340 and self.mouse[0] <= 540:
+                    if self.mouse[0] >= 340 and self.mouse[0] <= 540: # Left
                         
-                        if self.mouse[1] >= 60 and self.mouse[1] <= 260:
+                        if self.mouse[1] >= 60 and self.mouse[1] <= 260: # Top
                             self.tree.player_input((self.layer, 0, 0))
                         
-                        elif self.mouse[1] >= 260 and self.mouse[1] <= 460:
-                            #feld links mitte 
-                            #field[1][0]
+                        elif self.mouse[1] >= 260 and self.mouse[1] <= 460: # Middle
                             self.tree.player_input((self.layer, 1, 0))
                         
-                        elif self.mouse[1] >= 460 and self.mouse[1] <= 660:
-                            #feld links unten
-                            #field[2][0]
+                        elif self.mouse[1] >= 460 and self.mouse[1] <= 660: # Bottom
                             self.tree.player_input((self.layer, 2, 0))
                     
-                    elif self.mouse[0] >= 540 and self.mouse[0] <= 740:
+                    elif self.mouse[0] >= 540 and self.mouse[0] <= 740: # Middle
                         
-                        if self.mouse[1] >= 60 and self.mouse[1] <= 260:
-                            #mitte oben 
-                            #field[0][1]
+                        if self.mouse[1] >= 60 and self.mouse[1] <= 260: # Top
                             self.tree.player_input((self.layer, 0, 1))
                         
-                        elif self.mouse[1] >= 260 and self.mouse[1] <= 460:
-                            #mitte mitte 
-                            #field[1][1]
+                        elif self.mouse[1] >= 260 and self.mouse[1] <= 460: # Middle
                             self.tree.player_input((self.layer, 1, 1))
                         
-                        elif self.mouse[1] >= 460 and self.mouse[1] <= 660:
-                            #mitte unten 
-                            #field[2][1]
+                        elif self.mouse[1] >= 460 and self.mouse[1] <= 660: # Bottom
                             self.tree.player_input((self.layer, 2, 1))
                     
-                    elif self.mouse[0] >= 740 and self.mouse[0] <= 940:
+                    elif self.mouse[0] >= 740 and self.mouse[0] <= 940: # Right
                         
-                        if self.mouse[1] >= 60 and self.mouse[1] <= 260:
-                            #rechts oben 
-                            #fiel[0][2]
+                        if self.mouse[1] >= 60 and self.mouse[1] <= 260: # Top
                             self.tree.player_input((self.layer, 0, 2))
                         
-                        elif self.mouse[1] >= 260 and self.mouse[1] <= 460:
-                            #rechts mitte 
-                            #field[1][2]
+                        elif self.mouse[1] >= 260 and self.mouse[1] <= 460: # Middle
                             self.tree.player_input((self.layer, 1, 2))
                         
-                        elif self.mouse[1] >= 460 and self.mouse[1] <= 660:
-                            #rechts unten
-                            #field[2][2]
+                        elif self.mouse[1] >= 460 and self.mouse[1] <= 660: # Bottom
                             self.tree.player_input((self.layer, 2, 2))
 
         # Update by time or state
 
-        if not self.tree.tree.player:
+        if ((not self.state == const.STATE_OVER)
+            and (not self.tree.tree.player)):
+
             self.tree.ai_input()
         
         curr_millis = pygame.time.get_ticks()
