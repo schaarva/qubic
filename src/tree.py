@@ -116,6 +116,8 @@ class Tree:
     def rateNegamax_(self, node: Node):
         
         if not node.childs:
+
+            # Field full
             
             if self.countZero(node) == 0:
                 
@@ -130,6 +132,8 @@ class Tree:
                 else:
                     node.win = 0
             
+            # Field not full
+
             else:
                 node.win = self.rateCustom(node)
             
@@ -201,10 +205,10 @@ class Tree:
             else:
                 return -1
 
-        elif 2 > sum_rate / self.countZero(node) > 1.5:
+        elif 2 >= sum_rate / self.countZero(node) > 1.5:
             return 0
 
-        elif 1.5 > sum_rate / self.countZero(node):
+        elif 1.5 >= sum_rate / self.countZero(node):
 
             if node.player == True:
                 return -1
