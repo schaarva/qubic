@@ -21,7 +21,7 @@ class Node:
         ] # BUG
         self.childs = []
         self.win = 0
-        self.player = False
+        self.player = True # Ist als nächstes der Player dran?
         self.change = None
         self.over = False
 
@@ -97,14 +97,17 @@ class Tree:
             # Someone won
 
             if self.checkWin(node):
+
+                # self.printField(node)
+                # print()
                 
                 node.over = True
                 
                 if node.player:
-                    node.win = 1
+                    node.win = -1
                 
                 else:
-                    node.win = -1
+                    node.win = 1
                 
                 return node.win
             
@@ -159,22 +162,22 @@ class Tree:
         
         if 4 > sum_rate / self.countZero(node) > 2:
 
-            if node.player == True:
-                return +1
+            if node.player:
+                return -1
             
             else:
-                return -1
+                return +1
 
         elif 2 >= sum_rate / self.countZero(node) > 1.5:
             return 0
 
         elif 1.5 >= sum_rate / self.countZero(node):
 
-            if node.player == True:
-                return -1
+            if node.player:
+                return +1
             
             else:
-                return +1
+                return -1
 
     def checkWin(self, node: Node):
         """Check a pos for a win."""
@@ -216,7 +219,6 @@ class Tree:
             ((0, 2, 0), (1, 2, 0), (2, 2, 0)),
             ((0, 2, 1), (1, 2, 1), (2, 2, 1)),
             ((0, 2, 2), (1, 2, 2), (2, 2, 2)),
-
         
             ((0, 0, 0), (1, 1, 1), (2, 2, 2)), # Raumdiagonalen
             ((2, 0, 0), (1, 1, 1), (0, 2, 2)),

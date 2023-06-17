@@ -117,8 +117,11 @@ class Game:
 
         if self.tree.tree.over:
 
-            # self.tree.printField(self.tree.tree)
-            # print("--------------------------------------------")
+            print("##############################")
+            print(self.tree.tree.player)
+            print(self.tree.tree.win)
+            self.tree.printField(self.tree.tree)
+            print("##############################")
             self.state = const.STATE_OVER
         
         # Update by events
