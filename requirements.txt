@@ -1,1 +1,8 @@
 pygame
+easygui
+subprocess
+copy
+random
+pyinstaller
+shutil
+os
