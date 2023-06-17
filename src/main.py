@@ -12,14 +12,14 @@ import error
 
 if __name__ == "__main__":
     
-    # try:
+    try:
         
-    g = game.Game()
-    g.run()
+        g = game.Game()
+        g.run()
     
-    # except Exception as err:
+    except Exception as err:
         
-    #     try: g.quit()
-    #     except: pass
+        try: g.quit()
+        except: pass
 
-    #     error.Error_().show(err)
+        error.Error_().show(err)
