@@ -42,8 +42,6 @@ class Game:
         self.gui_help = gui.help.Help()
         self.gui_state = gui.state.State()
 
-
-        
         #pygame.key.set_repeat(0, 1000)
 
         # Loop init
@@ -63,6 +61,7 @@ class Game:
         
         # Handle inputs from player
         
+        self.mouse = pygame.mouse.get_pos()
         keys = pygame.key.get_pressed()
         events = pygame.event.get()
 
@@ -109,7 +108,7 @@ class Game:
         """React to events."""
         
         # Update by events
-        self.mouse = pygame.mouse.get_pos()
+        
         for event in self.eventqueue: 
             
             key, info = event
@@ -140,7 +139,7 @@ class Game:
                     if self.layer < 0: 
                        self.layer = 0
 
-            # Placement --> gibt Koordinaten weiter, sodass O/X da gerendert wird 
+            # Placement --> gibt Koordinaten weiter, sodass O/X da gerendert wird
         
             if key == const.LAYER: 
                 if info == const.PLACE: 
@@ -198,6 +197,11 @@ class Game:
 
         if not self.tree.tree.player:
             self.tree.ai_input()
+        
+        curr_millis = pygame.time.get_ticks()
+        curr_minutes, curr_millis = divmod(curr_millis, 60_000)
+        curr_seconds, curr_millis = divmod(curr_millis, 1_000)
+        self.gui_infos.set_time(curr_minutes, curr_seconds)
 
         self.gui_view.set_layer(self.layer)
 
@@ -205,11 +209,6 @@ class Game:
 
         self.gui_state.set_state(self.state)
         self.gui_state.set_win(self.tree.tree.win)
-
-        curr_millis = pygame.time.get_ticks()
-        curr_minutes, curr_millis = divmod(curr_millis, 60_000)
-        curr_seconds, curr_millis = divmod(curr_millis, 1_000)
-        self.gui_infos.set_time(curr_minutes, curr_seconds)
 
         fps = self.clock.get_fps()
         self.gui_infos.set_fps(int(fps))
