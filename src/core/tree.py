@@ -53,10 +53,22 @@ class Tree:
                 for z in range(3):
                     
                     if node.field[y][x][z] == const.EMPTY:
+
+                        # Create new node
                         
-                        child = Node()
-                        child.change = (y, x, z)
-                        child.field = copy.deepcopy(node.field)
+                        new_child = Node()
+                        new_child.change = (y, x, z)
+                        new_child.field = copy.deepcopy(node.field)
+
+                        if new_child.player:
+                            new_child.field[y][x][z] = const.CROSS 
+
+                        else:
+                            new_child.field[y][x][z] = const.CIRCLE
+                        
+                        new_child.player = not node.player
+
+                        # Check for duplicates
 
                         created = []
 
@@ -66,17 +78,9 @@ class Tree:
                         if (y, x, z) in created:
                             continue
 
-                        node.childs += [child]
-                        
-                        if child.player:
-                            child.field[y][x][z] = const.CROSS 
+                        node.childs += [new_child]
 
-                        else:
-                            child.field[y][x][z] = const.CIRCLE
-                        
-                        child.player = not node.player
-
-                        self._build(child, max_height-1)
+                        self._build(new_child, max_height-1)
     
     def printNodes(self):
         self._printNodes(self.tree, 0)
@@ -151,6 +155,14 @@ class Tree:
         print(node.field[0][0], "\t", node.field[1][0], "\t", node.field[2][0])
         print(node.field[0][1], "\t", node.field[1][1], "\t", node.field[2][1])
         print(node.field[0][2], "\t", node.field[1][2], "\t", node.field[2][2])
+    
+    def printChanges(self, node: Node):
+
+        for child in node.childs:
+
+            child: Node
+
+            print(child.change)
     
     def printFields(self, node: Node):
 
@@ -318,25 +330,12 @@ class Tree:
 
 if __name__ == "__main__":
 
-    nana = Node()
     tree = Tree()
-
-    # -1 x
-    # +1 o
-    nana.field = [[[0, 0, 0],
-                [-1, 0, 0],
-                [+1, +1, -1]],
-                [[-1, +1, 0],
-                [0, +1, -1],
-                [+1, -1, 0]],
-                [[0, 0, +1],
-                [0, +1 , 0],
-                [0, 0, 0]]
-                ]
     
-    tree.build(2, True)
+    tree.build()
     tree.rateNegamax()
-    tree.printNodes()
-    print(tree.countNodes())
+    tree.printChanges(tree.tree)
+    print(len([child.change for child in tree.tree.childs]))
+    # tree.printFields(tree.tree)
 
     # checkWin, checkDraw, countZero,   - funkt
