@@ -124,7 +124,7 @@ class Game:
             if key == const.SCREEN: 
                 if info == const.QUIT: 
                     
-                    self.running = False    
+                    self.running = False
                     return 
 
             # Layer
@@ -192,6 +192,7 @@ class Game:
         # Check game state
 
         if self.tree.tree.over:
+
             self.state = const.STATE_OVER
 
         # Update by time or state

@@ -2,7 +2,7 @@
 Qubic
 ~~~~~
 
-Author: 
+Author: Timo
 Description: Game tree
 """
 import copy
@@ -56,7 +56,7 @@ class Tree:
     def build(self):
         """Extend tree structure."""
       
-        self._build(self.tree, 1)
+        self._build(self.tree, 2)
             # 1 (akku save)
             # 2 (normal)
             # 3 (intelligent)
@@ -110,37 +110,35 @@ class Tree:
 
     def rateNegamax_(self, node: Node):
         
-        if not node.childs:
+        # Someone won
 
-            # Someone won
-
-            if self.checkWin(node):
-                
-                node.over = True
-                
-                if node.player:
-                    node.win = -1
-                
-                else:
-                    node.win = +1
-                
-                return node.win
+        if self.checkWin(node):
             
-            # No one won, field full
+            node.over = True
             
-            if self.countZero(node) == 0:
-
-                node.over = True
-                
-                node.win = 0
-                return node.win
+            if node.player:
+                node.win = -1
             
-            # No one won, field not full
-
             else:
-                
-                node.win = self.rateCustom(node)
-                return node.win
+                node.win = +1
+            
+            return node.win
+        
+        # No one won, field full
+        
+        if self.countZero(node) == 0:
+
+            node.over = True
+            
+            node.win = 0
+            return node.win
+        
+        # No one won, field not full
+
+        else:
+            
+            node.win = self.rateCustom(node)
+            return node.win
 
         maxi = -1
         
@@ -342,10 +340,17 @@ class Tree:
     
     def printField(self, node: Node):
 
+        print("Win:", node.win, "Player:", node.player, "Over:", node.over)
         print(node.field[0][0], "\t", node.field[1][0], "\t", node.field[2][0])
         print(node.field[0][1], "\t", node.field[1][1], "\t", node.field[2][1])
         print(node.field[0][2], "\t", node.field[1][2], "\t", node.field[2][2])
     
+    def printFields(self, node: Node):
+        for child in node.childs:
+            
+            self.printField(child)
+            print()
+
     def printChanges(self, node: Node):
 
         for child in node.childs:
@@ -353,26 +358,15 @@ class Tree:
             child: Node
 
             print(child.change)
-    
-    def printFields(self, node: Node):
-
-        for child in node.childs:
-
-            child: Node
-
-            print(child.field[0][0], "\t", child.field[1][0], "\t", child.field[2][0])
-            print(child.field[0][1], "\t", child.field[1][1], "\t", child.field[2][1])
-            print(child.field[0][2], "\t", child.field[1][2], "\t", child.field[2][2])
-            print()
 
 if __name__ == "__main__":
 
     tree = Tree()
     node = Node()
     node.field = [
-        [[-1, -1, 1], [-1, 1, 0], [1, 0, 0]],
-        [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
-        [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+        [[1, 0, -1], [0, -1, 0], [-1, -1, 0]],
+        [[0, 0, 0], [0, 0, 0], [0, 0, 1]],
+        [[0, 0, 0], [1, 0, 0], [0, 0, 1]]
     ]
     
     print(tree.checkWin(node))
