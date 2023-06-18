@@ -11,6 +11,9 @@ import shutil
 
 
 if __name__ == "__main__":
+
+    shutil.rmtree(r".\build", ignore_errors=True)
+    shutil.rmtree(r".\dist", ignore_errors=True)
     
     PyInstaller.__main__.run([  
         "--onefile",
@@ -18,6 +21,7 @@ if __name__ == "__main__":
         "--noconsole",
         "--clean",
         "--name", "Qubic",
+        "--icon", r".\src\assets\icon.ico",
         os.path.join(os.getcwd(), r".\src\main.py")
     ])
 
