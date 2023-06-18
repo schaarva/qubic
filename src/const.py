@@ -28,11 +28,5 @@ PLACE = "place"
 INDEPTH = "indepth"
 OUT = "out"
 
-
-
-#Helpbutton 
-#HELP = "help"
-
-
-
-
+# Helpbutton 
+# HELP = "help"

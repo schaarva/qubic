@@ -14,6 +14,7 @@ class State:
     """A class for info screens."""
 
     def __init__(self):
+        """Initializes a new info screen."""
 
         self.state = 0
         self.win = 0
@@ -27,21 +28,32 @@ class State:
         self.image_draft = pygame.image.load(
             "./assets/images/draft.png").convert_alpha()
     
-    def set_state(self, state: int):
+    def set_state(self, state: int) -> None:
+        """
+        Set the state of the game.
+
+        state: The game state. (-> const)
+        """
 
         self.state = state
 
         if not state in (-1, 0, 1):
             self.state = 0
     
-    def set_win(self, win: int):
+    def set_win(self, win: int) -> None:
+        """
+        Set the current win position.
+        
+        win: The win position. (w: 1, d: 0, l: -1)
+        """
 
         self.win = win
 
         if not win in (-1, 0, 1):
             self.win = 0
     
-    def render(self):
+    def render(self) -> list:
+        """Render the info screens."""
 
         surface_state = pygame.surface.Surface((1280, 720)).convert_alpha()
         surface_state.fill((0, 0, 0, 0))

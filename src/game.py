@@ -5,7 +5,6 @@ Qubic
 Author: Arne
 Description: Game loop
 """
-
 import pygame
 import subprocess
 
@@ -22,6 +21,7 @@ class Game:
     """The main game class."""
 
     def __init__(self):
+        """Initializes a new game."""
         
         # Engine init
 
@@ -55,7 +55,7 @@ class Game:
                              # und einer INFO (was soll in dem Bereich gemacht 
                              # werden)
 
-    def handle_inputs(self):
+    def handle_inputs(self) -> None:
         """Collect events."""
         
         # Handle inputs from player
@@ -110,7 +110,7 @@ class Game:
                         self.eventqueue += [(const.LAYER, const.PLACE)]
                     
     
-    def update(self):
+    def update(self) -> None:
         """React to events."""
         
         # Update by events
@@ -224,7 +224,7 @@ class Game:
 
         self.gui_field.set_field(self.tree.tree.field)
     
-    def render(self):
+    def render(self) -> None:
         """Update GUI images."""
 
         # Reset GUI
@@ -244,11 +244,11 @@ class Game:
         self.screen.blits(surfaces)
         pygame.display.flip()
 
-    def wait(self):
+    def wait(self) -> None:
         """Wait for next frame."""
         self.clock.tick(self.maxfps)
     
-    def run(self):
+    def run(self) -> None:
         """Run game loop."""
 
         self.running = True
@@ -264,7 +264,8 @@ class Game:
         
         pygame.quit()
     
-    def quit(self):
+    def quit(self) -> None:
+        """Quit the game."""
 
         self.running = False
         pygame.quit()

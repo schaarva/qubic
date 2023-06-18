@@ -10,6 +10,7 @@ import random
 
 import const
 
+
 class Node:
     """
     A node class for game tree.
@@ -27,7 +28,6 @@ class Node:
         |
         2
         y
-    
     """
     
     def __init__(self):
@@ -43,17 +43,19 @@ class Node:
         self.change = None
         self.over = False
 
+
 class Tree:
     """A game tree class."""
     
     def __init__(self):
+        """Initializes a new tree."""
 
         self.tree = Node()
         self.tree.player = True # Ist jetzt (im nächsten Zug) der Player dran?
 
         self.build()
 
-    def build(self):
+    def build(self) -> None:
         """Extend tree structure."""
       
         self._build(self.tree, 2)
@@ -63,7 +65,13 @@ class Tree:
             # 4 (wait a few sec)
             # 5 (data center)
 
-    def _build(self, node: Node, max_height: int):
+    def _build(self, node: Node, max_height: int) -> None:
+        """
+        Extend the tree structure.
+        
+        node: A Node object.
+        max_height: The maximum depth of tree.
+        """
         
         if max_height == 0:
             return
@@ -100,12 +108,17 @@ class Tree:
                             node.childs += [new_child]
                             self._build(new_child, max_height-1)
     
-    def rateNegamax(self):
-        """Rate by negamax."""
+    def rateNegamax(self) -> None:
+        """Rate tree by negamax."""
 
         self.rateNegamax_(self.tree)
 
-    def rateNegamax_(self, node: Node):
+    def rateNegamax_(self, node: Node) -> int:
+        """
+        Rate tree by negamax.
+        
+        node: A Node object.
+        """
        
         # Someone won
 
@@ -150,8 +163,12 @@ class Tree:
 
         return maxi
 
-    def rateCustom(self, node: Node):
-        """Rate by custom rating."""
+    def rateCustom(self, node: Node) -> int:
+        """
+        Rate by custom rating.
+        
+        node: A node object.
+        """
 
         sum_rate = 0
 
@@ -189,8 +206,12 @@ class Tree:
             else:
                 return -1
 
-    def checkWin(self, node: Node):
-        """Check a pos for a win."""
+    def checkWin(self, node: Node) -> bool:
+        """
+        Check a pos for a win.
+        
+        node: A node object.
+        """
         
         list_win = [                         # (z, y, x)
             ((0, 0, 0), (0, 0, 1), (0, 0, 2)), # Layer 0 von vorn
@@ -253,7 +274,12 @@ class Tree:
                     
         return False
 
-    def countZero(self, node: Node):
+    def countZero(self, node: Node) -> int:
+        """
+        Count the number of empty fields.
+
+        node: A node object.
+        """
 
         zero = 0
 
@@ -270,7 +296,8 @@ class Tree:
 
     # In-Game functions
     
-    def ai_input(self):
+    def ai_input(self) -> None:
+        """An AI makes a move."""
         
         if not self.tree.childs:
             return
@@ -292,7 +319,12 @@ class Tree:
         self.build()
         self.rateNegamax()
     
-    def player_input(self, cor: tuple):
+    def player_input(self, cor: tuple) -> None:
+        """
+        The player makes a move.
+        
+        cor: A tuple of (z, y, x) coordinates.
+        """
         
         for child in self.tree.childs:
 
@@ -307,10 +339,18 @@ class Tree:
     
     # Debug functions
 
-    def printNodes(self):
+    def printNodes(self) -> None:
+        """Print the tree structure."""
+
+
         self._printNodes(self.tree, 0)
     
-    def _printNodes(self, node: Node, __height):
+    def _printNodes(self, node: Node, __height) -> None:
+        """
+        Print the tree structure.
+
+        node: A node object.
+        """
 
         if not node:
             return
@@ -320,10 +360,17 @@ class Tree:
         for child in node.childs:
             self._printNodes(child, __height + 1)
 
-    def countNodes(self):
+    def countNodes(self) -> int:
+        """Count the number of nodes."""
+
         return self._countNodes(self.tree)
     
-    def _countNodes(self, node: Node):
+    def _countNodes(self, node: Node) -> int:
+        """
+        Count the number of nodes.
+        
+        node: A node object.
+        """
 
         if not node:
             return 0
@@ -335,26 +382,43 @@ class Tree:
 
         return count
     
-    def printField(self, node: Node):
+    def printField(self, node: Node) -> None:
+        """
+        Print information about a node.
+        
+        node: A node object.
+        """
 
         print("Win:", node.win, "Player:", node.player, "Over:", node.over)
         print(node.field[0][0], "\t", node.field[1][0], "\t", node.field[2][0])
         print(node.field[0][1], "\t", node.field[1][1], "\t", node.field[2][1])
         print(node.field[0][2], "\t", node.field[1][2], "\t", node.field[2][2])
     
-    def printFields(self, node: Node):
+    def printFields(self, node: Node) -> None:
+        """
+        Print information about the childs of a node.
+        
+        node: A node object.
+        """
+
         for child in node.childs:
             
             self.printField(child)
             print()
 
-    def printChanges(self, node: Node):
+    def printChanges(self, node: Node) -> None:
+        """
+        Print the next moves of a node.
+        
+        node: A node object.
+        """
 
         for child in node.childs:
 
             child: Node
 
             print(child.change)
+
 
 if __name__ == "__main__":
 

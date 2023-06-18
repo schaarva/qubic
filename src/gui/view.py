@@ -13,9 +13,16 @@ class View:
     """A class for the view perspective."""
 
     def __init__(self):
+        """Initialize a new view perspective."""
+
         self.layer = 0
     
-    def set_layer(self, layer: int):
+    def set_layer(self, layer: int) -> None:
+        """
+        Set the layer to show.
+
+        layer: The z-coordinate of the layer.        
+        """
         
         self.layer = layer
 
@@ -25,7 +32,8 @@ class View:
         if layer < 0:
             self.layer = 0
     
-    def render(self):
+    def render(self) -> list:
+        """Render the view perspective."""
 
         surface_view = pygame.surface.Surface((1280, 720)).convert_alpha()
         surface_view.fill((0, 0, 0, 0))

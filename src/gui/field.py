@@ -25,18 +25,29 @@ class Field:
     """
 
     def __init__(self):
+        """Initializes a field view."""
         
         self.field = [[[0, 0, 0]]*3]*3
         self.layer = 0
     
-    def set_field(self, field):
+    def set_field(self, field: list) -> None:
+        """
+        Update the field to show.
+        
+        field: The new field.
+        """
+
         self.field = field
     
     
-    def set_layer(self, layer: int):
+    def set_layer(self, layer: int) -> None:
+        """
+        Set the layer to show.
+        
+        layer: The z-coordinate of the layer.
+        """
         
         self.layer = layer
-
         
         if layer > 2:
             self.layer = 2
@@ -44,7 +55,8 @@ class Field:
         if layer < 0:
             self.layer = 0
         
-    def render(self):
+    def render(self) -> list:
+        """Render the grid."""
 
         # Render grid
         
