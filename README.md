@@ -15,3 +15,10 @@ Run the game:
 cd qubic/src/.
 python main.py
 ```
+
+...or...
+
+Build from source:
+```
+python build.py
+```
