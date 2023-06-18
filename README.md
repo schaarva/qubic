@@ -21,4 +21,6 @@ python main.py
 Build from source:
 ```
 python build.py
+cd ".\dist"
+.\Qubic.exe
 ```
