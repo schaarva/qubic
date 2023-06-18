@@ -12,7 +12,7 @@ Install the requirements:
 
 Run the game:
 ```
-cd qubic/src/.
+cd .\src\
 python main.py
 ```
 
@@ -21,6 +21,6 @@ python main.py
 Build from source:
 ```
 python build.py
-cd ".\dist"
+cd .\dist\
 .\Qubic.exe
 ```
