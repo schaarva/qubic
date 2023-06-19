@@ -11,6 +11,57 @@ import random
 import const
 
 
+LIST_WIN = [                         # (z, y, x)
+    ((0, 0, 0), (0, 0, 1), (0, 0, 2)), # Layer 0 von vorn
+    ((0, 1, 0), (0, 1, 1), (0, 1, 2)),
+    ((0, 2, 0), (0, 2, 1), (0, 2, 2)),
+    ((0, 0, 0), (0, 1, 0), (0, 2, 0)),
+    ((0, 0, 1), (0, 1, 1), (0, 2, 1)),
+    ((0, 0, 2), (0, 1, 2), (0, 2, 2)),
+    ((0, 0, 0), (0, 1, 1), (0, 2, 2)),
+    ((0, 0, 2), (0, 1, 1), (0, 2, 0)),
+    
+    ((1, 0, 0), (1, 0, 1), (1, 0, 2)), # Layer 1 von vorn
+    ((1, 1, 0), (1, 1, 1), (1, 1, 2)),
+    ((1, 2, 0), (1, 2, 1), (1, 2, 2)),
+    ((1, 0, 0), (1, 1, 0), (1, 2, 0)),
+    ((1, 0, 1), (1, 1, 1), (1, 2, 1)),
+    ((1, 0, 2), (1, 1, 2), (1, 2, 2)),
+    ((1, 0, 0), (1, 1, 1), (1, 2, 2)),
+    ((1, 0, 2), (1, 1, 1), (1, 2, 0)),
+    
+    ((2, 0, 0), (2, 0, 1), (2, 0, 2)), # Layer 2 von vorn
+    ((2, 1, 0), (2, 1, 1), (2, 1, 2)),
+    ((2, 2, 0), (2, 2, 1), (2, 2, 2)),
+    ((2, 0, 0), (2, 1, 0), (2, 2, 0)),
+    ((2, 0, 1), (2, 1, 1), (2, 2, 1)),
+    ((2, 0, 2), (2, 1, 2), (2, 2, 2)),
+    ((2, 0, 0), (2, 1, 1), (2, 2, 2)),
+    ((2, 0, 2), (2, 1, 1), (2, 2, 0)),
+    
+    ((0, 0, 0), (1, 0, 0), (2, 0, 0)), # Layerübergreifend längs
+    ((0, 0, 1), (1, 0, 1), (2, 0, 1)),
+    ((0, 0, 2), (1, 0, 2), (2, 0, 2)),
+    ((0, 1, 0), (1, 1, 0), (2, 1, 0)),
+    ((0, 1, 1), (1, 1, 1), (2, 1, 1)),
+    ((0, 1, 2), (1, 1, 2), (2, 1, 2)),
+    ((0, 2, 0), (1, 2, 0), (2, 2, 0)),
+    ((0, 2, 1), (1, 2, 1), (2, 2, 1)),
+    ((0, 2, 2), (1, 2, 2), (2, 2, 2)),
+
+    ((0, 0, 0), (1, 1, 1), (2, 2, 2)), # Raumdiagonalen
+    ((2, 0, 0), (1, 1, 1), (0, 2, 2)),
+    ((2, 0, 2), (1, 1, 1), (0, 2, 0)),
+    ((0, 0, 2), (1, 1, 1), (2, 2, 0)),
+    ((0, 0, 0), (1, 1, 0), (2, 2, 0)),
+    ((0, 0, 1), (1, 1, 1), (2, 2, 1)),
+    ((0, 0, 2), (1, 1, 2), (2, 2, 2)),
+    ((0, 2, 0), (1, 1, 0), (2, 0, 0)),
+    ((0, 2, 1), (1, 1, 1), (2, 0, 1)),
+    ((0, 2, 2), (1, 1, 2), (2, 0, 2)),
+]
+
+
 class Node:
     """
     A node class for game tree.
@@ -18,8 +69,8 @@ class Node:
     Field:
     ~~~~~
                    z
-              _ 2
-         _ 1
+              / 2
+         / 1
         0------1------2 x
         |
         |
@@ -43,6 +94,10 @@ class Node:
         self.change = None
         self.over = False
 
+        # Special cases
+        
+        self.rate_win = False
+        self.rate_block = False
 
 class Tree:
     """A game tree class."""
@@ -64,6 +119,8 @@ class Tree:
             # 3 (intelligent)
             # 4 (wait a few sec)
             # 5 (data center)
+            # ...
+            # 20 (unplayable)
 
     def _build(self, node: Node, max_height: int) -> None:
         """
@@ -125,6 +182,7 @@ class Tree:
         if self.checkWin(node):
             
             node.over = True
+            node.rate_win = True
             
             if node.player:
                 node.win = -1
@@ -205,6 +263,35 @@ class Tree:
             
             else:
                 return -1
+    
+    def checkBlock(self) -> None:
+        """Check a position for an enemy block."""
+
+        self._checkBlock(self.tree)
+        
+    def _checkBlock(self, node: Node) -> None:
+        """
+        Check a position for an enemy block.
+
+        node: A node object.
+        """
+        
+        if not node:
+            return
+        
+        for child in node.childs:
+            
+            for win in LIST_WIN:
+                for place1, place2, place3 in ((0, 1, 2), (1, 2, 0), (0, 2, 1)):
+
+                    if (node.field[win[place1][0]][win[place1][1]][win[place1][2]]
+                        == node.field[win[place2][0]][win[place2][1]][win[place2][2]]
+                        == const.CROSS):
+                        
+                        if node.field[win[place3][0]][win[place3][1]][win[place3][2]] == const.CIRCLE:
+                            node.rate_block = True
+            
+            self._checkBlock(child)
 
     def checkWin(self, node: Node) -> bool:
         """
@@ -212,58 +299,8 @@ class Tree:
         
         node: A node object.
         """
-        
-        list_win = [                         # (z, y, x)
-            ((0, 0, 0), (0, 0, 1), (0, 0, 2)), # Layer 0 von vorn
-            ((0, 1, 0), (0, 1, 1), (0, 1, 2)),
-            ((0, 2, 0), (0, 2, 1), (0, 2, 2)),
-            ((0, 0, 0), (0, 1, 0), (0, 2, 0)),
-            ((0, 0, 1), (0, 1, 1), (0, 2, 1)),
-            ((0, 0, 2), (0, 1, 2), (0, 2, 2)),
-            ((0, 0, 0), (0, 1, 1), (0, 2, 2)),
-            ((0, 0, 2), (0, 1, 1), (0, 2, 0)),
-            
-            ((1, 0, 0), (1, 0, 1), (1, 0, 2)), # Layer 1 von vorn
-            ((1, 1, 0), (1, 1, 1), (1, 1, 2)),
-            ((1, 2, 0), (1, 2, 1), (1, 2, 2)),
-            ((1, 0, 0), (1, 1, 0), (1, 2, 0)),
-            ((1, 0, 1), (1, 1, 1), (1, 2, 1)),
-            ((1, 0, 2), (1, 1, 2), (1, 2, 2)),
-            ((1, 0, 0), (1, 1, 1), (1, 2, 2)),
-            ((1, 0, 2), (1, 1, 1), (1, 2, 0)),
-            
-            ((2, 0, 0), (2, 0, 1), (2, 0, 2)), # Layer 2 von vorn
-            ((2, 1, 0), (2, 1, 1), (2, 1, 2)),
-            ((2, 2, 0), (2, 2, 1), (2, 2, 2)),
-            ((2, 0, 0), (2, 1, 0), (2, 2, 0)),
-            ((2, 0, 1), (2, 1, 1), (2, 2, 1)),
-            ((2, 0, 2), (2, 1, 2), (2, 2, 2)),
-            ((2, 0, 0), (2, 1, 1), (2, 2, 2)),
-            ((2, 0, 2), (2, 1, 1), (2, 2, 0)),
-            
-            ((0, 0, 0), (1, 0, 0), (2, 0, 0)), # Layerübergreifend längs
-            ((0, 0, 1), (1, 0, 1), (2, 0, 1)),
-            ((0, 0, 2), (1, 0, 2), (2, 0, 2)),
-            ((0, 1, 0), (1, 1, 0), (2, 1, 0)),
-            ((0, 1, 1), (1, 1, 1), (2, 1, 1)),
-            ((0, 1, 2), (1, 1, 2), (2, 1, 2)),
-            ((0, 2, 0), (1, 2, 0), (2, 2, 0)),
-            ((0, 2, 1), (1, 2, 1), (2, 2, 1)),
-            ((0, 2, 2), (1, 2, 2), (2, 2, 2)),
-        
-            ((0, 0, 0), (1, 1, 1), (2, 2, 2)), # Raumdiagonalen
-            ((2, 0, 0), (1, 1, 1), (0, 2, 2)),
-            ((2, 0, 2), (1, 1, 1), (0, 2, 0)),
-            ((0, 0, 2), (1, 1, 1), (2, 2, 0)),
-            ((0, 0, 0), (1, 1, 0), (2, 2, 0)),
-            ((0, 0, 1), (1, 1, 1), (2, 2, 1)),
-            ((0, 0, 2), (1, 1, 2), (2, 2, 2)),
-            ((0, 2, 0), (1, 1, 0), (2, 0, 0)),
-            ((0, 2, 1), (1, 1, 1), (2, 0, 1)),
-            ((0, 2, 2), (1, 1, 2), (2, 0, 2)),
-        ]
     
-        for win in list_win:
+        for win in LIST_WIN:
 
             if (node.field[win[0][0]][win[0][1]][win[0][2]]
                 == node.field[win[1][0]][win[1][1]][win[1][2]]
@@ -303,16 +340,37 @@ class Tree:
             return
         
         childs = self.tree.childs
+
+        win_win = []     # Gewonnen
+        draft_block = [] # Blocken
+        win = []         # Wahrscheinlich gewonnen
+        draft = []       # Unentschieden
+        loose = []       # Verloren
+
+        for child in childs:
+            
+            if child.rate_win:  
+                win_win += [child]
         
-        win = [child for child in childs if child.win == -1]
-        loose = [child for child in childs if child.win == 1]
-        draft = [child for child in childs if child.win == 0]
+            elif child.rate_block:
+                draft_block += [child]
+        
+            elif child.win == -1:
+                win += [child]
 
+            elif child.win == 0:
+                draft += [child]
+
+            else:
+                loose += [child]
+
+        random.shuffle(win_win)
+        random.shuffle(draft_block)
         random.shuffle(win)
-        random.shuffle(loose)
         random.shuffle(draft)
+        random.shuffle(loose)
 
-        childs = win + draft + loose
+        childs = win_win + draft_block + win + draft + loose
         
         self.tree = childs[0]
 
@@ -336,6 +394,7 @@ class Tree:
 
                 self.build()
                 self.rateNegamax()
+                self.checkBlock()
     
     # Debug functions
 
