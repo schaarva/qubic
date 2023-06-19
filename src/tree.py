@@ -280,16 +280,20 @@ class Tree:
             return
         
         for child in node.childs:
-            
             for win in LIST_WIN:
+
+                if node.player:
+                    continue
+
                 for place1, place2, place3 in ((0, 1, 2), (1, 2, 0), (0, 2, 1)):
 
-                    if (node.field[win[place1][0]][win[place1][1]][win[place1][2]]
-                        == node.field[win[place2][0]][win[place2][1]][win[place2][2]]
+                    if (child.field[win[place1][0]][win[place1][1]][win[place1][2]]
+                        == child.field[win[place2][0]][win[place2][1]][win[place2][2]]
                         == const.CROSS):
                         
-                        if node.field[win[place3][0]][win[place3][1]][win[place3][2]] == const.CIRCLE:
-                            node.rate_block = True
+                        if child.field[win[place3][0]][win[place3][1]][win[place3][2]] == const.CIRCLE:
+                            if (win[place3][0], win[place3][1], win[place3][2]) == child.change:
+                                child.rate_block = True
             
             self._checkBlock(child)
 
@@ -321,11 +325,8 @@ class Tree:
         zero = 0
 
         for x in range(3):
-            
             for y in range(3):
-                
                 for z in range(3):
-
                     if node.field[x][y][z] == 0:
                         zero += 1
 

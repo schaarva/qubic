@@ -192,7 +192,6 @@ class Game:
         # Check game state
 
         if self.tree.tree.over:
-
             self.state = const.STATE_OVER
 
         # Update by time or state
