@@ -39,7 +39,6 @@ class Field:
 
         self.field = field
     
-    
     def set_layer(self, layer: int) -> None:
         """
         Set the layer to show.
@@ -83,19 +82,29 @@ class Field:
 
         for x in range(3):
             for y in range(3):
+
+                # Set color by state
+
+                if self.field[self.layer][y][x] == const.CROSS:
+                    color = "blue"
+                
+                elif self.field[self.layer][y][x] == const.CIRCLE:
+                    color = "red"
+                
+                # Draw signs
                 
                 if self.field[self.layer][y][x] == const.CROSS:
                     
                     pygame.draw.line(
-                        surface_signs, "blue", (340+x*200+20, 60+y*200+20),
+                        surface_signs, color, (340+x*200+20, 60+y*200+20),
                         (340+x*200+180, 60+y*200+180), 8)
                     pygame.draw.line(
-                        surface_signs, "blue", (340+x*200+180, 60+y*200+20),
+                        surface_signs, color, (340+x*200+180, 60+y*200+20),
                         (340+x*200+20, 60+y*200+180), 8)
                 
                 elif self.field[self.layer][y][x] == const.CIRCLE:
                     
                     pygame.draw.circle(
-                        surface_signs, "red", (340+x*200+100, 60+y*200+100), 80, 8)
+                        surface_signs, color, (340+x*200+100, 60+y*200+100), 80, 8)
 
         return [(surface_grid, (0, 0)), (surface_signs, (0, 0))]

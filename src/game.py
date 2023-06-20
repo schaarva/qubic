@@ -84,16 +84,16 @@ class Game:
                         self.tree = tree.Tree()
                         self.state = const.STATE_READY
 
+            if event.type == pygame.MOUSEWHEEL:
+
+                if event.y  == 1:
+                    self.eventqueue += [(const.LAYER, const.INDEPTH)]
+    
+                if event.y == -1:
+                    self.eventqueue += [(const.LAYER, const.OUT)]    
+
             # Layers
             if self.state == const.STATE_PLAY:
-
-                if event.type == pygame.MOUSEWHEEL:
-
-                    if event.y  == 1:
-                        self.eventqueue += [(const.LAYER, const.INDEPTH)]
-        
-                    if event.y == -1:
-                        self.eventqueue += [(const.LAYER, const.OUT)]
             
                 # Placement
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -213,14 +213,13 @@ class Game:
 
         self.gui_view.set_layer(self.layer)
 
-        self.gui_field.set_layer(self.layer)
-
         self.gui_state.set_state(self.state)
         self.gui_state.set_win(self.tree.tree.win)
 
         fps = self.clock.get_fps()
         self.gui_infos.set_fps(int(fps))
 
+        self.gui_field.set_layer(self.layer)
         self.gui_field.set_field(self.tree.tree.field)
     
     def render(self) -> None:

@@ -58,7 +58,12 @@ class State:
         surface_state = pygame.surface.Surface((1280, 720)).convert_alpha()
         surface_state.fill((0, 0, 0, 0))
 
+        surface_background = pygame.surface.Surface((1280, 720)).convert_alpha()
+        surface_background.fill((255, 255, 255))
+
         if self.state == const.STATE_OVER:
+
+            surface_background.set_alpha(150)
 
             if self.win == -1:
                 surface_state = self.image_loss
@@ -70,6 +75,11 @@ class State:
                 surface_state = self.image_win
         
         elif self.state == const.STATE_READY:
-            surface_state = self.image_welcome
 
-        return [(surface_state, (0, 0))]
+            surface_background.set_alpha(0)
+            surface_state = self.image_welcome
+        
+        elif self.state == const.STATE_PLAY:
+            surface_background.set_alpha(0)
+
+        return [(surface_background, (0, 0)), (surface_state, (0, 0))]
